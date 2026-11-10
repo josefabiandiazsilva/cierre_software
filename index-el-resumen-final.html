@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingeniería de Software II · Resumen del curso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#E50914; --red2:#B20710; --redt:#C0070F; --redsoft:#FDECEE;
+  --bg:#ffffff; --bg2:#fafafa; --bg3:#f4f4f5; --line:#e4e4e7;
+  --txt:#18181b; --mut:#52525b; --dim:#71717a; --green:#15803d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--red);z-index:60;width:0}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:28px;padding:14px 4vw;background:rgba(255,255,255,.6);backdrop-filter:blur(8px);transition:background .3s,box-shadow .3s}
+nav.solid{background:rgba(255,255,255,.96);box-shadow:0 1px 0 var(--line)}
+.logo{font-family:'Bebas Neue';font-size:30px;color:var(--red);letter-spacing:.04em;line-height:1;white-space:nowrap}
+.nav-links{display:flex;gap:20px;font-size:14px;color:#3f3f46;white-space:nowrap;align-items:center}
+.blk{display:flex;gap:6px;align-items:center;color:var(--dim)}
+.blk a{display:grid;place-items:center;width:24px;height:24px;border-radius:4px;background:var(--bg3);border:1px solid var(--line);color:var(--txt);font-weight:700;font-size:12.5px}
+.blk a.on{background:var(--red);border-color:var(--red);color:#fff}
+.blk a.on::after{display:none}
+.nav-links a{transition:color .2s;position:relative}
+.nav-links a.on{color:var(--txt);font-weight:700}
+.nav-links a.on::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--red)}
+.nav-links a:hover{color:var(--red)}
+.search{margin-left:auto;display:flex;align-items:center;gap:8px;border:1px solid #d4d4d8;padding:7px 10px;background:#fff;border-radius:6px;color:var(--dim);transition:border-color .3s}
+.search:focus-within{border-color:var(--red)}
+.search svg{width:18px;height:18px;flex:none}
+.search input{width:190px;background:transparent;border:0;color:var(--txt);font-size:14px;outline:none}
+
+/* HERO */
+#hero{position:relative;height:100vh;min-height:640px;overflow:hidden;background:#fff}
+#hero3d{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero-fade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,.96) 0%,rgba(255,255,255,.75) 40%,rgba(255,255,255,0) 68%),linear-gradient(0deg,#fff 0%,rgba(255,255,255,0) 25%)}
+.hero-content{position:absolute;left:4vw;top:calc(50% + 34px);transform:translateY(-50%);max-width:min(640px,92vw);z-index:2}
+.kicker{font-size:12.5px;letter-spacing:.28em;color:var(--redt);font-weight:700;text-transform:uppercase}
+.hero-title{font-family:'Bebas Neue';font-size:clamp(64px,9.5vw,150px);line-height:.86;margin:14px 0 18px}
+.hero-title span{display:block;color:var(--red);white-space:nowrap}
+.hero-title i{display:inline-block;font-style:normal;opacity:0;transform:translateY(40px) rotateX(-70deg);animation:rise .9s cubic-bezier(.2,.9,.2,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.hero-desc{font-size:clamp(15px,1.25vw,18px);line-height:1.6;color:#3f3f46;opacity:0;animation:fadeUp .8s 1s forwards}
+.stats{display:flex;gap:30px;margin:26px 0 30px;opacity:0;animation:fadeUp .8s 1.15s forwards}
+.stats div{border-left:3px solid var(--red);padding-left:12px}
+.stats b{display:block;font-family:'Bebas Neue';font-size:40px;line-height:1;color:var(--txt)}
+.stats span{font-size:12px;color:var(--mut);letter-spacing:.08em;text-transform:uppercase}
+.hero-btns{display:flex;gap:12px;opacity:0;animation:fadeUp .8s 1.3s forwards;flex-wrap:wrap}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 26px;border-radius:6px;font-size:16px;font-weight:700;transition:transform .15s,background .2s}
+.btn:active{transform:scale(.96)}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:var(--red2)}
+.btn-gray{background:#fff;color:var(--txt);border:1px solid #d4d4d8}.btn-gray:hover{background:var(--bg3)}
+.scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;width:24px;height:40px;border:2px solid #a1a1aa;border-radius:14px}
+.scroll-cue::after{content:"";position:absolute;left:50%;top:7px;width:4px;height:8px;margin-left:-2px;background:var(--red);border-radius:2px;animation:cue 1.6s infinite}
+@keyframes cue{to{transform:translateY(14px);opacity:0}}
+
+/* SECCIONES */
+section.sec{padding:90px 4vw 40px;position:relative}
+section.block:nth-of-type(even){background:var(--bg2)}
+.sec-head{display:flex;align-items:flex-end;gap:24px;margin-bottom:34px;flex-wrap:wrap}
+.sec-num{font-family:'Bebas Neue';font-size:clamp(110px,13vw,190px);line-height:.75;color:transparent;-webkit-text-stroke:2px var(--red)}
+.sec-title{font-family:'Bebas Neue';font-size:clamp(42px,5vw,76px);line-height:.9;color:var(--txt)}
+.sec-desc{color:var(--mut);max-width:680px;margin-top:8px;line-height:1.5}
+.rule{height:2px;background:linear-gradient(90deg,var(--red),rgba(229,9,20,0));margin:0 0 50px;transform-origin:left;transform:scaleX(0);transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.rule.in{transform:none}
+.rv{opacity:0;transform:translateY(40px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* MAPA DE TEMAS */
+.map{display:grid;gap:26px}
+.mblock{display:grid;grid-template-columns:260px 1fr;gap:28px;align-items:start;padding-top:22px;border-top:1px solid var(--line)}
+.mb-k{font-size:11.5px;letter-spacing:.22em;font-weight:800;text-transform:uppercase;color:var(--c)}
+.mb-head h4{font-family:'Bebas Neue';font-size:34px;line-height:1;margin:6px 0 8px;font-weight:400}
+.mb-head p{font-size:13.5px;color:var(--mut);line-height:1.5}
+.mcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.wk{position:relative;padding:16px 18px;border-radius:8px;min-height:128px;cursor:pointer;background:#fff;border:1px solid var(--line);border-top:3px solid var(--c);transition:transform .25s,box-shadow .25s,border-color .25s;display:flex;flex-direction:column}
+.wk:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.08)}
+.wk .s{font-family:'Bebas Neue';font-size:30px;line-height:1;color:var(--c)}
+.wk .t{font-size:15px;font-weight:700;margin:6px 0 auto;line-height:1.3;color:var(--txt)}
+.wk .d{font-size:12.5px;color:var(--mut);margin-top:10px;line-height:1.4}
+
+/* TEMAS */
+.topic{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,64px);align-items:start;margin-bottom:110px}
+.topic.rev .t-media{order:2}
+.t-media{position:sticky;top:90px;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--bg3);box-shadow:0 20px 45px rgba(0,0,0,.10);cursor:grab}
+.t-media img,.t-media canvas{position:absolute;inset:0;width:100%!important;height:100%!important;object-fit:cover;display:block}
+.t-media img{transition:transform 6s ease}
+.t-media:hover img{transform:scale(1.06)}
+.t-media::after{content:"";position:absolute;inset:0;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.07);pointer-events:none}
+.t-hint{position:absolute;right:12px;bottom:12px;z-index:2;font-size:11px;color:#3f3f46;background:rgba(255,255,255,.9);padding:5px 9px;border-radius:4px;transition:opacity .3s}
+.t-media.live .t-hint{opacity:0}
+.t-num{position:absolute;left:12px;top:12px;z-index:2;font-size:11.5px;font-weight:700;letter-spacing:.06em;background:var(--red);color:#fff;padding:5px 10px;border-radius:4px}
+.t-kicker{font-size:12px;letter-spacing:.22em;color:var(--redt);font-weight:700;text-transform:uppercase}
+.t-title{font-family:'Bebas Neue';font-size:clamp(38px,3.6vw,58px);line-height:.95;margin:8px 0 6px;font-weight:400;color:var(--txt)}
+.t-tag{color:var(--mut);font-size:14px;margin-bottom:16px}
+.t-sum{font-size:16.5px;line-height:1.6;color:#27272a;margin-bottom:22px}
+.points{display:grid;gap:10px}
+.pt{display:grid;grid-template-columns:38px 1fr;gap:12px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:8px;transition:border-color .25s,box-shadow .25s}
+.pt:hover{border-color:#d4d4d8;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+.pt .n{font-family:'Bebas Neue';font-size:30px;line-height:1;color:var(--red)}
+.pt b{display:block;font-size:15px;margin-bottom:4px;color:var(--txt)}
+.pt p{font-size:14px;color:#3f3f46;line-height:1.55}
+.formula{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--bg3);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:8px;padding:14px 16px;margin-top:14px;font-size:13.5px;color:var(--txt);line-height:1.85;overflow-x:auto}
+.formula i{color:var(--redt);font-style:normal;font-weight:700}
+.fact{margin-top:14px;padding:14px 18px;background:linear-gradient(90deg,var(--redsoft),#fff);border:1px solid #f8d3d6;border-radius:8px;font-size:14.5px;line-height:1.55;color:#27272a}
+.fact b{color:var(--redt);font-size:11px;letter-spacing:.2em;display:block;margin-bottom:4px}
+.row2{display:flex;gap:26px;flex-wrap:wrap;margin-top:18px}
+.lbl{font-size:11px;letter-spacing:.2em;color:var(--dim);font-weight:700;margin-bottom:8px;text-transform:uppercase}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-size:12.5px;padding:5px 11px;border-radius:999px;background:var(--bg3);border:1px solid var(--line);color:#27272a}
+.chip.a{cursor:pointer;border-color:#f5c2c6;background:var(--redsoft);color:#9f0712;transition:background .2s,color .2s}
+.chip.a:hover{background:var(--red);color:#fff}
+
+/* AUTORES */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+.filters button{background:#fff;color:#27272a;border:1px solid #d4d4d8;padding:8px 16px;border-radius:999px;font-size:13.5px;transition:all .2s}
+.filters button:hover{border-color:var(--txt)}
+.filters button.on{background:var(--txt);color:#fff;border-color:var(--txt);font-weight:700}
+.authors{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+.acard{perspective:1200px;aspect-ratio:2/3;cursor:pointer}
+.acard.hide{display:none}
+.inner{position:relative;width:100%;height:100%;transition:transform .8s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+.acard.flip .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 8px 22px rgba(0,0,0,.06)}
+.front{background:var(--bg3)}
+.front img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.acard:hover .front img{transform:scale(1.05)}
+.front .meta{position:absolute;left:0;right:0;bottom:0;padding:14px;background:linear-gradient(0deg,#fff 45%,rgba(255,255,255,0))}
+.front .meta .nm{font-family:'Bebas Neue';font-size:32px;line-height:.95;margin-bottom:4px;color:var(--txt)}
+.front .meta b{display:block;font-size:11.5px;color:var(--redt);letter-spacing:.1em;text-transform:uppercase}
+.front .meta span{font-size:12px;color:var(--mut)}
+.back{transform:rotateY(180deg);background:#fff;border-top:3px solid var(--red);padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.back h4{font-family:'Bebas Neue';font-size:28px;line-height:1;font-weight:400}
+.back .yr{font-size:12px;color:var(--mut)}
+.back p{font-size:13px;line-height:1.5;color:#3f3f46}
+.back ul{list-style:none;font-size:12.5px;color:#3f3f46}
+.back li{padding:4px 0;border-bottom:1px solid #f0f0f0}
+.back li b{color:var(--redt);margin-right:6px}
+.back .eps{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}
+.back .eps a{font-size:11px;font-weight:700;background:var(--bg3);border:1px solid var(--line);padding:3px 7px;border-radius:4px}
+.back .eps a:hover{background:var(--red);border-color:var(--red);color:#fff}
+.acard.pulse .inner{animation:pulse 1.4s ease}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(229,9,20,0)}30%{box-shadow:0 0 0 8px rgba(229,9,20,.35)}}
+.skeleton{background:linear-gradient(100deg,#f1f1f2 30%,#e4e4e7 50%,#f1f1f2 70%);background-size:300% 100%;animation:shimmer 1.4s infinite;width:100%;height:100%}
+@keyframes shimmer{to{background-position:-150% 0}}
+
+/* LÍNEA DE TIEMPO */
+.tl-track{display:flex;overflow-x:auto;padding:40px 0 30px;scrollbar-width:none;cursor:grab}
+.tl-track::-webkit-scrollbar{display:none}
+.tl-track.drag{cursor:grabbing}
+.tl-item{flex:0 0 260px;position:relative;padding-top:56px;opacity:.2;transform:translateY(20px);transition:all .7s cubic-bezier(.2,.8,.2,1)}
+.tl-item.in{opacity:1;transform:none}
+.tl-item::before{content:"";position:absolute;top:22px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),#f5c2c6)}
+.tl-item::after{content:"";position:absolute;top:15px;left:18px;width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid var(--red)}
+.tl-year{position:absolute;top:-20px;left:12px;font-family:'Bebas Neue';font-size:46px;color:var(--txt)}
+.tl-card{margin:0 18px 0 12px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px;min-height:150px;box-shadow:0 6px 16px rgba(0,0,0,.04);transition:border-color .3s,transform .3s}
+.tl-card:hover{border-color:var(--red);transform:translateY(-4px)}
+.tl-card b{display:block;font-size:15px;margin-bottom:6px}
+.tl-card p{font-size:13px;color:var(--mut);line-height:1.45}
+.tl-card em{display:inline-block;margin-top:10px;font-style:normal;font-size:11px;color:var(--redt);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+
+/* QUIZ */
+#quizBox{border-radius:12px;overflow:hidden;position:relative;background:radial-gradient(120% 140% at 85% 0%,#fde3e6 0%,#fff 55%);border:1px solid var(--line)}
+.quiz-in{padding:clamp(24px,4vw,56px);max-width:860px;position:relative;z-index:1}
+.q-bar{height:4px;background:var(--line);border-radius:2px;margin:12px 0 22px;overflow:hidden}
+.q-bar b{display:block;height:100%;background:var(--red);transition:width .4s}
+.q-text{font-size:clamp(18px,1.8vw,24px);font-weight:600;margin-bottom:18px;line-height:1.35}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.q-opts button{background:#fff;border:1px solid #d4d4d8;color:var(--txt);text-align:left;padding:14px 16px;border-radius:8px;font-size:15px;transition:all .2s}
+.q-opts button:hover:not(:disabled){border-color:var(--txt);transform:translateY(-2px)}
+.q-opts button.ok{background:#dcfce7;border-color:var(--green)}
+.q-opts button.bad{background:var(--redsoft);border-color:var(--red)}
+.q-exp{margin-top:16px;font-size:14px;color:#3f3f46;line-height:1.5;min-height:22px}
+.q-foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;color:var(--mut);font-size:14px}
+.q-big{font-family:'Bebas Neue';font-size:110px;line-height:1;color:var(--red)}
+.q-title{font-family:'Bebas Neue';font-size:clamp(40px,5vw,66px);line-height:.95;margin:6px 0 8px}
+#quiz3d{position:absolute;right:-40px;top:50%;transform:translateY(-50%);width:420px;height:420px;opacity:.35;pointer-events:none}
+
+footer{padding:40px 4vw 60px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:60px}
+
+@media (max-width:900px){
+  .nav-links{display:none}
+  .search input{width:130px}
+  .mblock{grid-template-columns:1fr;gap:14px}
+  .topic{grid-template-columns:1fr}
+  .topic.rev .t-media{order:0}
+  .t-media{position:relative;top:0}
+  .q-opts{grid-template-columns:1fr}
+  #quiz3d{display:none}
+  .hero-fade{background:linear-gradient(0deg,#fff 0%,rgba(255,255,255,.8) 55%,rgba(255,255,255,.5) 100%)}
+  .stats{gap:18px}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+</head>
+<body>
+<div id="bar"></div>
+<nav id="nav">
+  <a href="#hero" class="logo">ING. SOFTWARE II</a>
+  <div class="nav-links" id="navLinks">
+    <a href="#mapa">Temas</a>
+    <span class="blk">Bloques <a href="#b1">1</a><a href="#b2">2</a><a href="#b3">3</a><a href="#b4">4</a></span>
+    <a href="#autores">Autores</a>
+    <a href="#historia">Historia</a>
+    <a href="#autoevaluacion">Autoevaluación</a>
+  </div>
+  <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="searchInput" placeholder="Buscar tema, concepto o autor" autocomplete="off"></label>
+</nav>
+
+<section id="hero">
+  <canvas id="hero3d"></canvas>
+  <div class="hero-fade"></div>
+  <div class="hero-content">
+    <div class="kicker">Resumen del curso · Temas y autores clave</div>
+    <h1 class="hero-title" id="heroTitle"></h1>
+    <p class="hero-desc">Requisitos y UML, orientación a objetos, calidad de software, referentes de procesos, pruebas, gestión de riesgos y gestión de proyectos con enfoque PMI: los 13 temas del curso, con las ideas clave y los autores que las formularon.</p>
+    <div class="stats"><div><b data-count="13">0</b><span>Temas</span></div><div><b data-count="4">0</b><span>Bloques</span></div><div><b data-count="24">0</b><span>Autores</span></div><div><b data-count="12">0</b><span>Preguntas</span></div></div>
+    <div class="hero-btns"><a class="btn btn-red" href="#mapa">Ver los temas ↓</a><a class="btn btn-gray" href="#autores">Autores clave</a></div>
+  </div>
+  <div class="scroll-cue"></div>
+</section>
+
+<section class="sec" id="mapa">
+  <div class="sec-head rv"><div><div class="kicker">Visión general</div><div class="sec-title">Mapa de temas</div><p class="sec-desc">Los 13 temas del curso organizados en 4 bloques temáticos. Haz clic en cualquier tema para ir a su resumen.</p></div></div>
+  <div class="rule"></div>
+  <div class="map" id="map"></div>
+</section>
+
+<div id="blocks"></div>
+
+<section class="sec" id="autores">
+  <div class="sec-head rv"><div><div class="kicker">Referentes</div><div class="sec-title">Autores clave de la ingeniería de software</div><p class="sec-desc">Haz clic en una tarjeta para ver su aporte, sus obras principales y los temas del curso donde aparece.</p></div></div>
+  <div class="rule"></div>
+  <div class="filters" id="filters"></div>
+  <div class="authors" id="authors"></div>
+</section>
+
+<section class="sec" id="historia">
+  <div class="sec-head rv"><div><div class="kicker">Contexto</div><div class="sec-title">Línea de tiempo</div><p class="sec-desc">Hitos de la disciplina, de 1968 a hoy. Arrastra o usa la rueda del mouse para recorrerla.</p></div></div>
+  <div class="rule"></div>
+  <div class="tl-track" id="tlTrack"></div>
+</section>
+
+<section class="sec" id="autoevaluacion">
+  <div class="sec-head rv"><div><div class="kicker">Práctica</div><div class="sec-title">Autoevaluación</div></div></div>
+  <div class="rule"></div>
+  <div id="quizBox"><canvas id="quiz3d" width="420" height="420"></canvas><div class="quiz-in" id="quizIn"></div></div>
+</section>
+
+<footer>
+  <div><div class="logo" style="font-size:24px">INGENIERÍA DE SOFTWARE II</div><p style="margin-top:8px">Resumen interactivo del curso · 2026</p></div>
+  <div style="max-width:460px">Ilustraciones 3D generadas con three.js y retratos estilizados generados con canvas.</div>
+</footer>
+
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const BLOQUES = [
+  {id:1, name:'Fundamentos', desc:'Repaso de Ingeniería de Software I, ingeniería de requerimientos con UML y paradigma orientado a objetos.', eps:[1,2,3], c:'#E50914'},
+  {id:2, name:'Calidad de software', desc:'Conceptos y atributos de calidad, referentes de procesos, planeación de la validación y técnicas de prueba.', eps:[4,5,6,7], c:'#B20710'},
+  {id:3, name:'Riesgos', desc:'Identificación, clasificación y análisis de riesgos; respuesta, mitigación, contingencia y seguimiento.', eps:[8,9], c:'#52525b'},
+  {id:4, name:'Gestión de proyectos (PMI)', desc:'Inicio y planeación, estimación, seguimiento y control, aseguramiento de calidad y gestión de configuraciones.', eps:[10,11,12,13], c:'#18181b'},
+];
+const EP = [
+{n:1,b:1,t:'Repaso de Ingeniería de Software I',tag:'Presentación · ciclo de vida · metodologías',
+ syn:'Volvemos al origen: qué es la ingeniería de software, por qué nació en plena «crisis del software» y cómo los modelos de ciclo de vida ponen orden al caos de construir sistemas.',
+ concepts:['Crisis del software','Cascada','Incremental','Espiral','RUP','Ágil / Scrum','Análisis vs diseño'],
+ scenes:[
+  ['El origen','En 1968 la conferencia de la OTAN en Garmisch (Alemania) adopta el término «ingeniería de software» como respuesta a proyectos que se pasaban de costo y tiempo o simplemente fallaban. Margaret Hamilton lo impulsó en el programa Apolo.'],
+  ['Ciclo de vida','Fases genéricas: comunicación y requisitos → planeación → análisis y diseño → construcción → pruebas → despliegue → mantenimiento. Cada modelo cambia el orden, cuántas veces se repiten y dónde pone el énfasis.'],
+  ['Modelos clásicos','Cascada (Royce, 1970): secuencial, útil con requisitos estables. Incremental: entregas parciales que ya funcionan. Prototipos: para descubrir requisitos. Espiral (Boehm, 1986): iteraciones guiadas por análisis de riesgos. RUP: iterativo e incremental, dirigido por casos de uso y centrado en la arquitectura.'],
+  ['Metodologías ágiles','Manifiesto Ágil (2001): individuos e interacciones, software funcionando, colaboración con el cliente y respuesta al cambio. Scrum (Schwaber y Sutherland), XP (Beck) y Kanban.'],
+  ['Análisis y diseño','Análisis = QUÉ debe hacer el sistema (dominio, requisitos). Diseño = CÓMO lo hará (arquitectura, componentes, interfaces, datos). Principios: abstracción, modularidad, alta cohesión y bajo acoplamiento.']],
+ fact:'Royce nunca usó la palabra «cascada». En su artículo de 1970 advertía que el modelo puramente secuencial era arriesgado y proponía retroalimentación, prototipos y «hacerlo dos veces».',
+ authors:['royce','boehm','sommerville','pressman','hamilton']},
+
+{n:2,b:1,t:'Ingeniería de requerimientos y UML',tag:'Actores · casos de uso · relaciones · especificación',
+ syn:'Los errores más caros nacen aquí. Aprendemos a descubrir, escribir y validar lo que el sistema debe hacer, y a modelarlo con casos de uso UML.',
+ concepts:['Elicitación','RF vs RNF','Actores','Casos de uso','«include» / «extend»','Especificación','Historias de usuario','Trazabilidad'],
+ scenes:[
+  ['El proceso','Elicitación (entrevistas, talleres, observación, prototipos) → análisis y negociación → especificación → validación → gestión de cambios.'],
+  ['Tipos de requisitos','Funcionales: lo que el sistema hace. No funcionales: cómo lo hace (rendimiento, seguridad, usabilidad, disponibilidad). Un buen requisito es claro, verificable, atómico, consistente y trazable. Referentes: IEEE 830 y su sucesora ISO/IEC/IEEE 29148.'],
+  ['Actores y casos de uso','Actor: rol externo (persona, sistema o dispositivo) que interactúa con el sistema. Caso de uso: secuencia de acciones que entrega un resultado de valor a un actor (Jacobson). Se dibujan dentro del límite del sistema.'],
+  ['Relaciones','Asociación actor–caso de uso. «include»: comportamiento obligatorio y reutilizado. «extend»: comportamiento opcional bajo una condición (punto de extensión). Generalización entre actores o entre casos de uso.'],
+  ['Especificación','Plantilla: nombre, actores, precondiciones, flujo básico, flujos alternos y de excepción, postcondiciones y reglas de negocio. En ágil: «Como <rol> quiero <meta> para <beneficio>», con criterios INVEST.']],
+ fact:'Según los estudios de Boehm, corregir en producción un error nacido en los requisitos puede costar decenas, e incluso cien veces más, que corregirlo durante la especificación.',
+ authors:['amigos','sommerville','cohn','fowler']},
+
+{n:3,b:1,t:'Orientación a objetos, patrones y arquitectura',tag:'Clases · patrones de diseño · arquitectura preliminar',
+ syn:'Objetos, clases y patrones: el lenguaje con el que pensamos el diseño. Del diagrama de clases a la primera versión de la arquitectura.',
+ concepts:['Abstracción','Encapsulamiento','Herencia','Polimorfismo','Diagrama de clases','Patrones GoF','SOLID','Capas / MVC'],
+ scenes:[
+  ['Los 4 pilares','Abstracción, encapsulamiento, herencia y polimorfismo. El paradigma nace con Simula 67 (Dahl y Nygaard) y se populariza con Smalltalk (Alan Kay).'],
+  ['Diagrama de clases','Clase = nombre + atributos + operaciones con visibilidad (+ público, − privado, # protegido). Relaciones: asociación con multiplicidad, agregación ◇ (todo-parte débil), composición ◆ (todo-parte fuerte), generalización △ y dependencia ⇢.'],
+  ['Patrones de diseño','23 patrones GoF (1994). Creacionales: Singleton, Factory Method, Abstract Factory, Builder, Prototype. Estructurales: Adapter, Composite, Decorator, Facade, Proxy… De comportamiento: Observer, Strategy, Command, State, Template Method…'],
+  ['Principios SOLID','Responsabilidad única · Abierto/cerrado · Sustitución de Liskov · Segregación de interfaces · Inversión de dependencias. Se suman a alta cohesión, bajo acoplamiento y el ocultamiento de información de Parnas.'],
+  ['Arquitectura preliminar','Estilos: capas (presentación–negocio–datos), MVC, cliente-servidor, microservicios, orientada a eventos. Se documenta con vistas (modelo 4+1 de Kruchten) y se justifica con los atributos de calidad.']],
+ fact:'El término «programación orientada a objetos» lo acuñó Alan Kay, quien después insistió en que la gran idea eran los mensajes entre objetos, más que las clases.',
+ authors:['gof','amigos','martin','parnas','fowler']},
+
+{n:4,b:2,t:'Calidad de software',tag:'Conceptos · atributos · aseguramiento · control',
+ syn:'¿Qué significa que un software «sea de calidad»? Definiciones, modelos de atributos y cómo se asegura la calidad durante todo el proceso, no solo al final.',
+ concepts:['Calidad de producto','Calidad de proceso','ISO/IEC 25010','McCall','SQA vs QC','Costo de calidad','PDCA'],
+ scenes:[
+  ['Definiciones','Crosby: conformidad con los requisitos. Juran: adecuación al uso. IEEE: grado en que un sistema cumple los requisitos especificados y las necesidades del cliente.'],
+  ['Atributos (ISO/IEC 25010)','Modelo de calidad del producto: adecuación funcional, eficiencia de desempeño, compatibilidad, usabilidad, fiabilidad, seguridad, mantenibilidad y portabilidad. La revisión de 2023 renombra usabilidad (capacidad de interacción) y portabilidad (flexibilidad) y añade «protección» (safety). Antecedentes: McCall (1977) y Boehm (1978).'],
+  ['Aseguramiento vs control','SQA (preventivo, orientado al proceso): estándares, auditorías, revisiones, métricas. QC (detectivo, orientado al producto): pruebas e inspecciones. La verificación y validación atraviesan ambos.'],
+  ['Costo de la calidad','Prevención + evaluación (costo de conformidad) frente a fallas internas + externas (costo de no conformidad). Invertir en prevención reduce el costo total.'],
+  ['Mejora continua','Ciclo PDCA de Shewhart–Deming: Planear, Hacer, Verificar, Actuar. Es la base de ISO 9001 y de los modelos de madurez.']],
+ fact:'Philip Crosby tituló su libro «Quality Is Free» (1979): lo caro no es la calidad, sino no tenerla.',
+ authors:['deming','crosby','humphrey','pressman','sommerville']},
+
+{n:5,b:2,t:'Modelos y referentes de procesos',tag:'SWEBOK · ISO/IEC 12207 · CMMI',
+ syn:'Los mapas oficiales del territorio: qué conocimiento debe dominar un ingeniero de software, qué procesos componen el ciclo de vida y cómo se mide la madurez de una organización.',
+ concepts:['SWEBOK','Áreas de conocimiento','ISO/IEC/IEEE 12207','Procesos del ciclo de vida','CMMI','Niveles de madurez','PSP / TSP'],
+ scenes:[
+  ['SWEBOK','Guide to the Software Engineering Body of Knowledge (IEEE Computer Society). La versión 4.0 (2024) organiza 18 áreas de conocimiento, entre ellas requisitos, arquitectura, diseño, construcción, pruebas, operaciones, mantenimiento, configuración, gestión, procesos, modelos y métodos, calidad, seguridad, práctica profesional, economía y fundamentos.'],
+  ['ISO/IEC/IEEE 12207','Estándar de procesos del ciclo de vida del software. La edición 2017 agrupa sus procesos en cuatro familias: de acuerdo (adquisición, suministro), organizacionales habilitadores, de gestión técnica (planeación, riesgos, configuración, calidad…) y técnicos (requisitos, arquitectura, implementación, verificación, validación, mantenimiento…).'],
+  ['CMMI','Modelo de madurez y capacidad (nacido en el SEI, hoy administrado por ISACA). Niveles de madurez: 1 Inicial · 2 Gestionado · 3 Definido · 4 Gestionado cuantitativamente · 5 En optimización. Puede verse por etapas (madurez organizacional) o de forma continua (capacidad por área).'],
+  ['Del CMM al equipo','Watts Humphrey creó el CMM en el SEI de Carnegie Mellon y luego PSP (proceso personal) y TSP (proceso de equipo) para llevar la disciplina hasta cada ingeniero.'],
+  ['¿Cómo se relacionan?','SWEBOK dice QUÉ hay que saber · 12207 dice QUÉ procesos existen · CMMI dice QUÉ TAN BIEN se ejecutan.']],
+ fact:'El CMM nació de una necesidad del Departamento de Defensa de EE. UU.: evaluar de forma objetiva a sus contratistas de software.',
+ authors:['humphrey','deming','boehm']},
+
+{n:6,b:2,t:'Planeación de la validación',tag:'Plan de pruebas · casos · criterios de aceptación',
+ syn:'Probar no es improvisar. Diseñamos el plan de pruebas, derivamos casos desde los requisitos y acordamos con el cliente cuándo algo está «aceptado».',
+ concepts:['Verificación vs validación','Plan de pruebas','ISO/IEC/IEEE 29119','Caso de prueba','Criterios de aceptación','Dado–Cuando–Entonces','Matriz de trazabilidad'],
+ scenes:[
+  ['V&V','Verificación: ¿estamos construyendo el producto correctamente? (conforme a la especificación). Validación: ¿estamos construyendo el producto correcto? (satisface al usuario). Formulación clásica de Boehm.'],
+  ['Plan de pruebas','Basado en IEEE 829 / ISO/IEC/IEEE 29119: alcance, elementos a probar, enfoque, recursos, ambiente, cronograma, roles, riesgos, criterios de entrada, suspensión y salida, y entregables.'],
+  ['Generación de casos','Cada caso: ID, requisito trazado, precondiciones, datos de entrada, pasos, resultado esperado, resultado obtenido y estado. Se derivan de los casos de uso (cada escenario genera al menos un caso) y de las técnicas de caja negra y blanca.'],
+  ['Criterios de aceptación','Condiciones verificables que debe cumplir un requisito o historia. Formato BDD: Dado <contexto>, Cuando <acción>, Entonces <resultado>. Alimentan la Definición de Hecho.'],
+  ['Matriz de trazabilidad','Requisito ↔ caso de uso ↔ caso de prueba ↔ defecto. Demuestra cobertura y facilita el análisis de impacto de los cambios.']],
+ fact:'Dijkstra lo resumió así: las pruebas pueden demostrar la presencia de errores, pero nunca su ausencia. Por eso hay que planear qué probar y cuándo detenerse.',
+ authors:['boehm','dijkstra','myers','beck']},
+
+{n:7,b:2,t:'Caja negra y caja blanca',tag:'Unitarias · integración · sistema · inspecciones',
+ syn:'Dos miradas a la misma pieza: desde fuera, por su comportamiento; desde dentro, por su código. Y los niveles en los que se prueba, de la unidad al sistema completo.',
+ concepts:['Particiones de equivalencia','Valores límite','Tablas de decisión','Cobertura','Complejidad ciclomática','Unitarias','Integración','Sistema','Inspecciones'],
+ scenes:[
+  ['Caja negra','Basada en la especificación: particiones de equivalencia (un caso por clase válida e inválida), análisis de valores límite (mín−1, mín, máx, máx+1), tablas de decisión, transición de estados y casos de uso.'],
+  ['Caja blanca','Basada en la estructura: cobertura de sentencias < decisiones (ramas) < condiciones < caminos. Camino básico de McCabe: V(G) = E − N + 2P = decisiones + 1 = número mínimo de casos para cubrir los caminos independientes.'],
+  ['Niveles de prueba','Unitarias (una unidad aislada con stubs y mocks) → integración (big bang, descendente, ascendente, sándwich) → sistema (funcional y no funcional: carga, seguridad, usabilidad) → aceptación (alfa, beta, UAT).'],
+  ['Inspecciones','Pruebas estáticas: revisiones, walkthroughs e inspecciones formales de Fagan (IBM, 1976) con roles de moderador, autor, lector y registrador. Encuentran defectos sin ejecutar el código.'],
+  ['Automatización','TDD de Kent Beck (rojo → verde → refactorizar) y la pirámide de pruebas de Mike Cohn: muchas unitarias, menos de servicio o integración y pocas de interfaz.']],
+ formula:'<i>V(G)</i> = E − N + 2P &nbsp;&nbsp;// aristas − nodos + 2·componentes<br><i>V(G)</i> = nº de decisiones + 1<br>Ej.: edad válida 18–60 → probar <i>17, 18, 60, 61</i> (+ un valor interno)',
+ fact:'Glenford Myers definió probar como ejecutar un programa con la intención de encontrar errores: una prueba exitosa es la que descubre un defecto.',
+ authors:['mccabe','myers','fagan','beck','cohn']},
+
+{n:9,b:3,t:'Riesgos: identificación y análisis',tag:'Identificación · clasificación · análisis',
+ syn:'Todo proyecto tiene amenazas ocultas. Cómo detectarlas antes de que se materialicen, clasificarlas y medir qué tan graves son.',
+ concepts:['Riesgo vs problema','Identificación','Delphi','Clasificación','Probabilidad × impacto','Exposición al riesgo','Registro de riesgos'],
+ scenes:[
+  ['¿Qué es un riesgo?','Un evento incierto que, si ocurre, afecta (negativa o positivamente) los objetivos del proyecto. Tiene una probabilidad menor al 100% y una pérdida o impacto asociado. Si ya ocurrió, es un problema.'],
+  ['Identificación','Lluvia de ideas, listas de verificación, entrevistas a expertos, técnica Delphi, análisis DOFA, lecciones aprendidas y revisión de supuestos y restricciones.'],
+  ['Clasificación','Pressman: riesgos del proyecto (cronograma, presupuesto, personal), técnicos (diseño, tecnología, rendimiento) y del negocio (mercado, estrategia). También genéricos frente a específicos del producto.'],
+  ['Análisis cualitativo','Matriz probabilidad × impacto (p. ej. 1–5 × 1–5) para priorizar en zonas roja, ámbar y verde.'],
+  ['Análisis cuantitativo','Exposición al riesgo: RE = P × C. Ej.: 60% de probabilidad de rehacer 12 componentes a $250.000 cada uno → RE = 0,6 × $3.000.000 = $1.800.000. Otras técnicas: valor monetario esperado, árboles de decisión, Monte Carlo.']],
+ formula:'<i>RE</i> = P(riesgo) × C(pérdida)<br><i>RE</i> = 0,60 × $3.000.000 = <i>$1.800.000</i>',
+ fact:'Boehm publicó en 1991 su «Top 10» de riesgos del software. El número uno de la lista: deficiencias de personal.',
+ authors:['boehm','demarco','pressman']},
+
+{n:10,b:3,t:'Respuesta y mitigación de riesgos',tag:'Contingencia · seguimiento · comunicación',
+ syn:'Una vez identificados los riesgos, se decide cómo responder: estrategias de respuesta, planes de contingencia, monitoreo continuo y cómo comunicar los riesgos sin generar pánico.',
+ concepts:['Evitar','Transferir','Mitigar','Aceptar','Escalar','Contingencia','Disparadores','RMMM'],
+ scenes:[
+  ['Estrategias ante amenazas (PMI)','Evitar (eliminar la causa), transferir (seguro, contrato, tercero), mitigar (reducir probabilidad o impacto), aceptar (de forma activa con reservas o pasiva) y escalar (fuera del alcance del equipo). Para oportunidades: explotar, compartir, mejorar y aceptar.'],
+  ['Mitigación vs contingencia','Mitigar se hace ANTES (proactivo). La contingencia es el plan B que se ejecuta cuando se activa el disparador. Reserva de contingencia (riesgos conocidos) frente a reserva de gestión (desconocidos).'],
+  ['Plan RMMM (Pressman)','Para cada riesgo: Reducción (mitigación), Monitoreo (indicadores y disparadores) y Manejo (contingencia). Ej.: alta rotación de personal → documentar, trabajo en pares, respaldo del conocimiento.'],
+  ['Seguimiento','Registro de riesgos vivo: ID, descripción, categoría, P, I, RE, dueño, respuesta, disparador y estado. Se revisa en cada reunión, con auditorías y reevaluación de riesgos residuales y secundarios.'],
+  ['Comunicación','Informes visuales (mapa de calor, top 10), rutas de escalamiento claras y transparencia con los interesados según la matriz de comunicaciones.']],
+ fact:'DeMarco y Lister lo plantean en «Waltzing with Bears»: si un proyecto no tiene riesgos, probablemente no vale la pena hacerlo.',
+ authors:['pressman','boehm','demarco']},
+
+{n:11,b:4,t:'Gestión de proyectos con enfoque PMI',tag:'Inicio y planeación · alcance · interesados · EDT',
+ syn:'El enfoque del PMI: cómo nace formalmente un proyecto, quién tiene poder sobre él y cómo partir el trabajo en piezas manejables.',
+ concepts:['PMBOK','Acta de constitución','Interesados','Matriz poder/interés','Alcance','EDT / WBS','Regla del 100%','Diccionario de la EDT'],
+ scenes:[
+  ['El enfoque PMI','Guía PMBOK. Grupos de procesos: inicio, planificación, ejecución, monitoreo y control, y cierre. La 7.ª edición (2021) se reorganizó en 12 principios y 8 dominios de desempeño (interesados, equipo, enfoque y ciclo de vida, planificación, trabajo, entrega, medición e incertidumbre).'],
+  ['Inicio','Acta de constitución (project charter): propósito, objetivos medibles, requisitos de alto nivel, hitos, presupuesto resumido, riesgos iniciales, director asignado y el patrocinador que lo autoriza.'],
+  ['Interesados','Identificar a todos los afectados, registrarlos y analizarlos con la matriz poder/interés: gestionar de cerca, mantener satisfechos, mantener informados o monitorear.'],
+  ['Alcance','Planificar la gestión del alcance → recopilar requisitos → definir el alcance (entregables, exclusiones, supuestos, criterios de aceptación) → crear la EDT → validar y controlar el alcance.'],
+  ['EDT / WBS','Descomposición jerárquica orientada a entregables. Regla del 100%: los hijos suman todo el trabajo del padre, ni más ni menos. El nivel más bajo son los paquetes de trabajo (estimables y asignables). Línea base del alcance = enunciado + EDT + diccionario.']],
+ fact:'La EDT describe QUÉ se entrega, no CÓMO ni CUÁNDO: las actividades y el cronograma vienen después.',
+ authors:['brooks','scrum','demarco']},
+
+{n:12,b:4,t:'Estimación de esfuerzo, tiempos y costos',tag:'Esfuerzo · tiempo · costos · recursos',
+ syn:'¿Cuánto tardará? ¿Cuánto costará? ¿Cuántas personas? El arte (y la ciencia) de estimar bajo incertidumbre.',
+ concepts:['Cono de incertidumbre','Juicio experto','PERT','Puntos de función','Puntos de caso de uso','COCOMO II','Planning Poker','Ley de Brooks'],
+ scenes:[
+  ['El cono de incertidumbre','Al inicio una estimación puede desviarse hasta unas 4 veces por arriba o por debajo; el rango se estrecha a medida que se definen requisitos y diseño (Boehm, McConnell). Una estimación es un rango, no un número.'],
+  ['Técnicas','Analogía, juicio experto y Delphi de banda ancha, descomposición ascendente con la EDT, modelos paramétricos y Planning Poker (Grenning, popularizado por Cohn) con la serie de Fibonacci.'],
+  ['PERT (tres puntos)','E = (O + 4M + P) / 6 y σ = (P − O) / 6. Ej.: O = 4, M = 6, P = 14 días → E = 7 días, σ ≈ 1,7.'],
+  ['Tamaño y esfuerzo','Puntos de función (Albrecht, IBM, 1979): entradas, salidas, consultas, archivos internos y externos ajustados por complejidad. Puntos de caso de uso (Karner, 1993). COCOMO (Boehm, 1981) y COCOMO II: Esfuerzo = A × Tamaño^E × ∏ multiplicadores (personas-mes).'],
+  ['Costos y recursos','Costo = esfuerzo × tarifa + recursos (hardware, licencias, nube) + reservas. Nivelación de recursos, ruta crítica y la Ley de Brooks: sumar gente tarde multiplica los canales de comunicación, n(n−1)/2, y el tiempo de entrenamiento.']],
+ formula:'<i>PERT</i>: E = (O + 4M + P) / 6 = (4 + 24 + 14) / 6 = <i>7 días</i><br><i>COCOMO II</i>: PM = A · Size<sup>E</sup> · ∏EM<sub>i</sub><br><i>Canales</i> = n(n − 1) / 2 → 5 personas = 10 · 10 personas = <i>45</i>',
+ fact:'Ley de Hofstadter: siempre toma más tiempo del que esperas, incluso cuando tienes en cuenta la Ley de Hofstadter.',
+ authors:['boehm','brooks','albrecht','cohn']},
+
+{n:13,b:4,t:'Seguimiento y control del proyecto',tag:'Indicadores · cambios · toma de decisiones',
+ syn:'El plan se encuentra con la realidad. Medimos el avance, detectamos desviaciones con el valor ganado, gestionamos los cambios y decidimos con datos.',
+ concepts:['Valor ganado','CPI','SPI','Burndown','Control integrado de cambios','CCB','KPIs','Lecciones aprendidas'],
+ scenes:[
+  ['Valor ganado (EVM)','PV: valor planificado · EV: valor ganado (trabajo realmente completado) · AC: costo real. CV = EV − AC · SV = EV − PV · CPI = EV / AC · SPI = EV / PV. Un CPI o SPI menor que 1 indica sobrecosto o retraso.'],
+  ['Pronósticos','EAC = BAC / CPI (si la tendencia continúa) · ETC = EAC − AC · VAC = BAC − EAC · TCPI = (BAC − EV) / (BAC − AC).'],
+  ['Indicadores','Ágiles: velocidad, burndown/burnup, lead time y cycle time. Calidad: densidad de defectos, cobertura, defectos escapados. Gestión: % de hitos cumplidos, riesgos abiertos, satisfacción del cliente.'],
+  ['Control de cambios','Solicitud → análisis de impacto (alcance, tiempo, costo, calidad, riesgo) → decisión del Comité de Control de Cambios (CCB) → actualización de líneas base → comunicación.'],
+  ['Toma de decisiones','Basada en datos: análisis de causa raíz (Ishikawa, 5 porqués), análisis de alternativas y árboles de decisión. Ciclo PDCA y retrospectivas.']],
+ formula:'BAC = $100M · PV = $45M · EV = $40M · AC = $50M<br><i>CPI</i> = 40/50 = <i>0,80</i> (sobrecosto) · <i>SPI</i> = 40/45 ≈ <i>0,89</i> (atraso)<br><i>EAC</i> = BAC / CPI = <i>$125M</i> · VAC = −$25M',
+ fact:'Un CPI de 0,80 significa que por cada peso gastado solo se obtienen 80 centavos de trabajo terminado.',
+ authors:['deming','demarco','scrum']},
+
+{n:14,b:4,t:'Calidad, configuración y trabajo colaborativo',tag:'SQA · SCM · Git · CI/CD',
+ syn:'Cómo trabaja un equipo sobre el mismo código sin pisarse: aseguramiento de calidad en el día a día, gestión de configuración y flujos colaborativos modernos.',
+ concepts:['Plan SQA','Revisiones técnicas','SCM','Líneas base','Control de versiones','Git','Ramas','Pull requests','CI/CD'],
+ scenes:[
+  ['Aseguramiento de calidad','Plan SQA: estándares, revisiones técnicas formales, auditorías, métricas y gestión de defectos. Revisiones de código por pares con listas de verificación.'],
+  ['Gestión de configuración (SCM)','Identificación de los elementos de configuración, control de versiones, control de cambios, auditoría de configuración e informes de estado. Línea base: versión revisada y aprobada que solo cambia mediante un proceso formal.'],
+  ['Control de versiones','Git (Torvalds, 2005), distribuido. Estrategias: GitFlow (main, develop, feature, release, hotfix), GitHub Flow y trunk-based development. Versionado semántico MAYOR.MENOR.PARCHE.'],
+  ['Trabajo colaborativo','Pull/merge requests con revisión, convenciones de commits, issues y tableros Kanban, documentación viva y programación en pareja (XP).'],
+  ['Integración y entrega continua','CI (difundida por Beck y Fowler): integrar varias veces al día con compilación y pruebas automáticas. CD: cada cambio queda listo para desplegarse. Es la base de DevOps.']],
+ fact:'Torvalds escribió la primera versión de Git en pocas semanas de 2005, después de que el kernel de Linux perdiera el acceso gratuito a BitKeeper.',
+ authors:['torvalds','fowler','beck','fagan','martin']},
+
+];
+EP.forEach((e,i)=>{ e.m=e.n; e.n=i+1; });
+
+const AUTH = {
+ brooks:{name:'Frederick P. Brooks Jr.',short:'Fred Brooks',ini:'FB',years:'1931 – 2022',role:'El mítico hombre-mes',people:1,glasses:1,
+   txt:'Dirigió el desarrollo del OS/360 en IBM y de esa experiencia salió uno de los libros más citados de la disciplina. Formuló la Ley de Brooks: añadir personas a un proyecto atrasado lo atrasa aún más. En «No Silver Bullet» sostuvo que ninguna técnica aislada traería una mejora de productividad de un orden de magnitud. Premio Turing 1999.',
+   works:[['1975','The Mythical Man-Month'],['1986','No Silver Bullet'],['1999','Premio Turing']]},
+ boehm:{name:'Barry W. Boehm',short:'Barry Boehm',ini:'BB',years:'1935 – 2022',role:'Espiral · COCOMO · riesgos',people:1,glasses:1,
+   txt:'Probablemente el autor que más aparece en este curso. Propuso el modelo en espiral, guiado por el análisis de riesgos; creó COCOMO para estimar esfuerzo; publicó el Top 10 de riesgos del software; popularizó la distinción entre verificación y validación y mostró cómo crece el costo de corregir un defecto a lo largo del ciclo de vida.',
+   works:[['1981','Software Engineering Economics (COCOMO)'],['1986','A Spiral Model of Software Development'],['1991','Software Risk Management: Principles and Practices'],['2000','COCOMO II']]},
+ royce:{name:'Winston W. Royce',short:'Winston Royce',ini:'WR',years:'1929 – 1995',role:'El modelo en cascada',people:1,
+   txt:'Su artículo de 1970 describió el desarrollo secuencial por fases que luego se conocería como «cascada». Paradójicamente, el mismo texto advertía los riesgos de no iterar y recomendaba involucrar al cliente, documentar y construir un prototipo antes del sistema definitivo.',
+   works:[['1970','Managing the Development of Large Software Systems']]},
+ sommerville:{name:'Ian Sommerville',short:'Ian Sommerville',ini:'IS',years:'1951 –',role:'El libro de texto de referencia',people:1,glasses:1,
+   txt:'Profesor británico autor de «Software Engineering», con diez ediciones y uno de los textos más usados en universidades del mundo. Referente en ingeniería de requisitos, procesos, sistemas críticos y sistemas sociotécnicos.',
+   works:[['1982','Software Engineering (1.ª ed.)'],['2015','Software Engineering (10.ª ed.)']]},
+ pressman:{name:'Roger S. Pressman',short:'Roger Pressman',ini:'RP',years:'1947 –',role:'Un enfoque práctico',people:1,
+   txt:'Autor de «Ingeniería del software: un enfoque práctico», presente en casi todas las bibliografías del curso (hoy con Bruce Maxim). Difundió la visión en capas de la disciplina (calidad, proceso, métodos, herramientas) y el plan RMMM para gestionar riesgos.',
+   works:[['1982','Software Engineering: A Practitioner\'s Approach'],['2019','9.ª edición, con Bruce Maxim']]},
+ amigos:{name:'Booch, Rumbaugh y Jacobson',short:'Los Tres Amigos',ini:'3A',years:'UML · 1997',role:'Los creadores de UML',people:3,
+   txt:'Grady Booch, James Rumbaugh e Ivar Jacobson unificaron sus métodos (Booch, OMT y OOSE) en el Lenguaje Unificado de Modelado, que el OMG adoptó como estándar en 1997. También definieron el Proceso Unificado (RUP). Jacobson introdujo los casos de uso.',
+   works:[['1992','Jacobson: Object-Oriented Software Engineering (casos de uso)'],['1997','UML 1.1 adoptado por el OMG'],['1999','The Unified Software Development Process']]},
+ gof:{name:'Gamma, Helm, Johnson y Vlissides',short:'Gang of Four',ini:'GoF',years:'1994',role:'Patrones de diseño',people:4,
+   txt:'La «Banda de los Cuatro» catalogó 23 patrones de diseño orientado a objetos agrupados en creacionales, estructurales y de comportamiento. Dos de sus consejos más famosos: programar hacia una interfaz y no hacia una implementación, y preferir la composición sobre la herencia.',
+   works:[['1994','Design Patterns: Elements of Reusable Object-Oriented Software']]},
+ beck:{name:'Kent Beck',short:'Kent Beck',ini:'KB',years:'1961 –',role:'XP · TDD · JUnit',people:1,glasses:1,
+   txt:'Creador de Extreme Programming y del desarrollo guiado por pruebas (TDD). Coautor de JUnit junto a Erich Gamma y uno de los firmantes del Manifiesto Ágil. Popularizó la programación en pareja y la integración continua.',
+   works:[['1999','Extreme Programming Explained'],['2001','Manifiesto Ágil'],['2002','Test-Driven Development: By Example']]},
+ fowler:{name:'Martin Fowler',short:'Martin Fowler',ini:'MF',years:'1963 –',role:'Refactoring · UML Distilled',people:1,
+   txt:'Divulgador clave de la ingeniería de software moderna: refactorización, arquitectura empresarial, UML práctico e integración continua. Firmante del Manifiesto Ágil.',
+   works:[['1997','UML Distilled'],['1999','Refactoring'],['2002','Patterns of Enterprise Application Architecture']]},
+ martin:{name:'Robert C. Martin',short:'«Uncle Bob»',ini:'RM',years:'1952 –',role:'SOLID · Clean Code',people:1,glasses:1,
+   txt:'Reunió los principios SOLID de diseño orientado a objetos (el acrónimo lo propuso Michael Feathers) y escribió sobre código limpio y arquitectura limpia. Firmante del Manifiesto Ágil.',
+   works:[['2002','Agile Software Development: Principles, Patterns, and Practices'],['2008','Clean Code'],['2017','Clean Architecture']]},
+ humphrey:{name:'Watts S. Humphrey',short:'Watts Humphrey',ini:'WH',years:'1927 – 2010',role:'Padre de la calidad del software',people:1,glasses:1,
+   txt:'En el SEI de Carnegie Mellon creó el marco de madurez de procesos que dio origen al CMM y luego al CMMI. Después llevó la disciplina al individuo y al equipo con PSP y TSP.',
+   works:[['1989','Managing the Software Process'],['1995','A Discipline for Software Engineering (PSP)']]},
+ dijkstra:{name:'Edsger W. Dijkstra',short:'Edsger Dijkstra',ini:'ED',years:'1930 – 2002',role:'Programación estructurada',people:1,glasses:1,
+   txt:'Pionero de la programación estructurada y del razonamiento formal sobre programas. Su carta contra la sentencia GOTO marcó una época. Premio Turing 1972. Recordaba que las pruebas solo pueden mostrar la presencia de errores, nunca su ausencia.',
+   works:[['1968','Go To Statement Considered Harmful'],['1972','Premio Turing'],['1976','A Discipline of Programming']]},
+ parnas:{name:'David L. Parnas',short:'David Parnas',ini:'DP',years:'1941 –',role:'Modularidad y ocultamiento',people:1,
+   txt:'Formuló el principio de ocultamiento de información: cada módulo debe esconder una decisión de diseño que probablemente cambie. Base del encapsulamiento y del diseño modular.',
+   works:[['1972','On the Criteria To Be Used in Decomposing Systems into Modules']]},
+ hamilton:{name:'Margaret Hamilton',short:'Margaret Hamilton',ini:'MH',years:'1936 –',role:'Apolo · el término «ingeniería de software»',people:1,glasses:1,
+   txt:'Dirigió la división de software del MIT que construyó el software de vuelo del programa Apolo. Impulsó el uso del término «ingeniería de software» para darle a la disciplina la misma seriedad que a otras ingenierías. Medalla Presidencial de la Libertad en 2016.',
+   works:[['1969','Software de vuelo del Apolo 11'],['2016','Medalla Presidencial de la Libertad']]},
+ mccabe:{name:'Thomas J. McCabe',short:'Thomas McCabe',ini:'TM',years:'1976',role:'Complejidad ciclomática',people:1,
+   txt:'Definió la complejidad ciclomática V(G) a partir del grafo de flujo de un programa: mide los caminos independientes y fija el número mínimo de casos para la prueba del camino básico.',
+   works:[['1976','A Complexity Measure']]},
+ myers:{name:'Glenford J. Myers',short:'Glenford Myers',ini:'GM',years:'1979',role:'El arte de probar software',people:1,
+   txt:'Su libro definió la mentalidad del tester: probar es ejecutar un programa con la intención de encontrar errores. Sistematizó las particiones de equivalencia, los valores límite y la prueba de caja blanca.',
+   works:[['1979','The Art of Software Testing']]},
+ fagan:{name:'Michael Fagan',short:'Michael Fagan',ini:'MF',years:'1976',role:'Inspecciones formales',people:1,
+   txt:'En IBM diseñó el proceso de inspección formal de diseño y código, con roles definidos (moderador, autor, lector, registrador) y métricas, demostrando que detectar defectos temprano es mucho más barato.',
+   works:[['1976','Design and Code Inspections to Reduce Errors in Program Development']]},
+ deming:{name:'W. Edwards Deming',short:'W. E. Deming',ini:'WD',years:'1900 – 1993',role:'PDCA · mejora continua',people:1,glasses:1,
+   txt:'Estadístico y consultor que difundió el ciclo Planear-Hacer-Verificar-Actuar (heredado de Shewhart) y los 14 puntos para la gestión de la calidad. Su influencia en la industria japonesa de posguerra fue enorme.',
+   works:[['1950','Conferencias en Japón'],['1982','Out of the Crisis (14 puntos)']]},
+ crosby:{name:'Philip Crosby y Joseph Juran',short:'Crosby & Juran',ini:'CJ',years:'Gurús de la calidad',role:'¿Qué es calidad?',people:2,
+   txt:'Crosby definió la calidad como conformidad con los requisitos y defendió el objetivo de cero defectos. Juran la definió como adecuación al uso y propuso su trilogía: planificación, control y mejora de la calidad.',
+   works:[['1951','Juran: Quality Control Handbook'],['1979','Crosby: Quality Is Free']]},
+ demarco:{name:'Tom DeMarco y Timothy Lister',short:'DeMarco & Lister',ini:'DL',years:'Peopleware',role:'Personas, medición y riesgos',people:2,
+   txt:'Mostraron que los grandes problemas de los proyectos son más sociológicos que tecnológicos. DeMarco defendió la medición para controlar proyectos y ambos escribieron una guía clásica sobre gestión de riesgos.',
+   works:[['1982','DeMarco: Controlling Software Projects'],['1987','Peopleware'],['2003','Waltzing with Bears']]},
+ cohn:{name:'Mike Cohn',short:'Mike Cohn',ini:'MC',years:'Agile',role:'Historias, estimación ágil, pirámide',people:1,
+   txt:'Referente de las historias de usuario y la estimación ágil. Popularizó el Planning Poker y propuso la pirámide de automatización de pruebas.',
+   works:[['2004','User Stories Applied'],['2005','Agile Estimating and Planning'],['2009','Succeeding with Agile (pirámide de pruebas)']]},
+ albrecht:{name:'Allan J. Albrecht',short:'Allan Albrecht',ini:'AA',years:'1979',role:'Puntos de función',people:1,glasses:1,
+   txt:'En IBM creó el análisis de puntos de función para medir el tamaño funcional del software de forma independiente del lenguaje de programación.',
+   works:[['1979','Measuring Application Development Productivity']]},
+ scrum:{name:'Ken Schwaber y Jeff Sutherland',short:'Schwaber & Sutherland',ini:'SS',years:'Scrum · 1995',role:'Creadores de Scrum',people:2,
+   txt:'Presentaron Scrum formalmente en OOPSLA 1995 y mantienen la Guía de Scrum. Ambos firmaron el Manifiesto Ágil. Scrum se combina hoy con el enfoque PMI en proyectos híbridos.',
+   works:[['1995','Scrum en OOPSLA'],['2001','Manifiesto Ágil'],['2020','Guía de Scrum (última revisión)']]},
+ torvalds:{name:'Linus Torvalds',short:'Linus Torvalds',ini:'LT',years:'1969 –',role:'Linux · Git',people:1,
+   txt:'Creador del kernel Linux y de Git, el sistema de control de versiones distribuido que hoy domina la gestión de configuración y el trabajo colaborativo.',
+   works:[['1991','Linux'],['2005','Git']]},
+};
+const TOP10 = ['brooks','boehm','royce','sommerville','pressman','amigos','gof','beck','fowler','martin'];
+const LEGENDS = ['hamilton','dijkstra','humphrey','parnas','deming','crosby','demarco','mccabe','myers','fagan','cohn','albrecht','scrum','torvalds'];
+
+const TIMELINE = [
+ ['1968','Nace la disciplina','Conferencia de la OTAN en Garmisch: se habla de «ingeniería de software» ante la crisis del software.','Fundamentos'],
+ ['1968','Go To, considerado dañino','Dijkstra impulsa la programación estructurada.','Diseño'],
+ ['1970','Modelo en cascada','Royce describe el desarrollo secuencial por fases.','Ciclo de vida'],
+ ['1972','Ocultamiento de información','Parnas define cómo descomponer sistemas en módulos.','Diseño'],
+ ['1975','El mítico hombre-mes','Brooks y su ley sobre proyectos atrasados.','Gestión'],
+ ['1976','Complejidad e inspecciones','McCabe publica V(G); Fagan, las inspecciones formales en IBM.','Pruebas'],
+ ['1979','Probar y medir','Myers: The Art of Software Testing. Albrecht: puntos de función.','Pruebas · Estimación'],
+ ['1981','COCOMO','Boehm publica su modelo de estimación de costos.','Estimación'],
+ ['1986','Espiral y bala de plata','Boehm: modelo en espiral guiado por riesgos. Brooks: No Silver Bullet.','Riesgos'],
+ ['1987','Peopleware','DeMarco y Lister ponen a las personas en el centro.','Gestión'],
+ ['1991','CMM v1.0','El SEI publica el modelo de madurez de Humphrey.','Procesos'],
+ ['1994','Design Patterns','La Banda de los Cuatro cataloga 23 patrones.','Diseño'],
+ ['1995','Scrum','Schwaber y Sutherland lo presentan en OOPSLA.','Ágil'],
+ ['1997','UML','El OMG adopta el lenguaje de los Tres Amigos.','Modelado'],
+ ['1999','XP y Refactoring','Beck publica Extreme Programming Explained; Fowler, Refactoring.','Ágil'],
+ ['2001','Manifiesto Ágil','17 firmantes en Snowbird, Utah.','Ágil'],
+ ['2002','CMMI','Integración de modelos de madurez (v1.1).','Procesos'],
+ ['2004','SWEBOK 2004','Primera versión oficial del cuerpo de conocimiento.','Procesos'],
+ ['2005','Git','Torvalds crea el control de versiones distribuido.','Configuración'],
+ ['2008','Clean Code','Uncle Bob y el código limpio.','Calidad'],
+ ['2011','ISO/IEC 25010','Modelo de calidad del producto de software.','Calidad'],
+ ['2017','ISO/IEC/IEEE 12207:2017','Nueva edición de los procesos del ciclo de vida.','Procesos'],
+ ['2021','PMBOK 7.ª ed.','Principios y dominios de desempeño.','PMI'],
+ ['2024','SWEBOK v4','18 áreas de conocimiento.','Procesos'],
+];
+
+const QUIZ = [
+ {q:'¿Quién formuló que añadir personas a un proyecto atrasado lo retrasa aún más?',o:['Barry Boehm','Fred Brooks','Winston Royce','Watts Humphrey'],a:1,e:'Es la Ley de Brooks, de «The Mythical Man-Month» (1975): más gente implica más canales de comunicación y tiempo de entrenamiento.'},
+ {q:'El modelo en espiral de Boehm está guiado principalmente por…',o:['La documentación','Los costos fijos','El análisis de riesgos','Las pruebas unitarias'],a:2,e:'Cada vuelta de la espiral incluye identificar y resolver riesgos antes de avanzar.'},
+ {q:'¿Qué mide la fórmula V(G) = E − N + 2P?',o:['Puntos de función','Complejidad ciclomática','Exposición al riesgo','Índice de desempeño de costo'],a:1,e:'McCabe (1976): número de caminos independientes = casos mínimos para la prueba del camino básico.'},
+ {q:'En CMMI, el nivel 3 de madurez se llama…',o:['Gestionado','Inicial','Definido','En optimización'],a:2,e:'1 Inicial · 2 Gestionado · 3 Definido · 4 Gestionado cuantitativamente · 5 En optimización.'},
+ {q:'Las particiones de equivalencia y los valores límite son técnicas de…',o:['Caja negra','Caja blanca','Inspección formal','Gestión de configuración'],a:0,e:'Se derivan de la especificación, sin mirar el código interno.'},
+ {q:'«¿Estamos construyendo el producto correcto?» corresponde a…',o:['Verificación','Validación','Auditoría','Integración'],a:1,e:'Validación = el producto correcto para el usuario. Verificación = construir el producto correctamente.'},
+ {q:'La regla del 100% pertenece a…',o:['La matriz de riesgos','El diagrama de clases','La EDT / WBS','El plan de pruebas'],a:2,e:'Los elementos hijos de la EDT deben sumar exactamente el 100% del trabajo del padre.'},
+ {q:'Si EV = $40M y AC = $50M, el proyecto…',o:['Va por debajo del presupuesto','Va sobre costo (CPI = 0,8)','Va adelantado','Está exactamente en plan'],a:1,e:'CPI = EV / AC = 0,8 < 1 → se gasta más de lo que se gana en trabajo terminado.'},
+ {q:'Contratar un seguro ante un riesgo es una estrategia de…',o:['Evitar','Mitigar','Transferir','Aceptar'],a:2,e:'Transferir traslada el impacto (no el riesgo en sí) a un tercero: seguros, contratos, garantías.'},
+ {q:'PERT con O = 4, M = 6 y P = 14 días da una estimación de…',o:['6 días','7 días','8 días','8,5 días'],a:1,e:'(4 + 4·6 + 14) / 6 = 42 / 6 = 7 días.'},
+ {q:'¿Quiénes escribieron «Design Patterns» (1994)?',o:['Los Tres Amigos','DeMarco y Lister','La Banda de los Cuatro','Schwaber y Sutherland'],a:2,e:'Gamma, Helm, Johnson y Vlissides: 23 patrones creacionales, estructurales y de comportamiento.'},
+ {q:'¿Qué norma define el modelo de calidad del producto de software?',o:['ISO/IEC 25010','ISO/IEC/IEEE 12207','ISO 9001','IEEE 829'],a:0,e:'ISO/IEC 25010 (familia SQuaRE) define las características de calidad del producto.'},
+];
+const CAT = {
+  procesos:['royce','boehm','sommerville','pressman','humphrey','hamilton','scrum','beck'],
+  diseno:['amigos','gof','fowler','martin','parnas','dijkstra'],
+  calidad:['deming','crosby','myers','mccabe','fagan','beck','martin','humphrey'],
+  gestion:['brooks','boehm','demarco','cohn','albrecht','scrum','torvalds'],
+};
+const AUTH_ORDER=['brooks','boehm','royce','sommerville','pressman','amigos','gof','humphrey','beck','fowler','martin','dijkstra','parnas','hamilton','deming','crosby','myers','mccabe','fagan','demarco','cohn','albrecht','scrum','torvalds'];
+
+const epBy=n=>EP[n-1];
+const $=s=>document.querySelector(s);
+const el=(t,c,h)=>{const e=document.createElement(t); if(c) e.className=c; if(h!=null) e.innerHTML=h; return e;};
+function rng(seed){ let s=seed*9301+49297; return ()=>{ s=(s*9301+49297)%233280; return s/233280; }; }
+const pad=n=>String(n).padStart(2,'0');
+function wrap(ctx,text,maxW){ const w=text.split(' '),L=[]; let l=''; w.forEach(x=>{const t=l?l+' '+x:x; if(ctx.measureText(t).width>maxW&&l){L.push(l);l=x;} else l=t;}); L.push(l); return L; }
+const blockOf=n=>BLOQUES.find(b=>b.eps.includes(n));
+
+/* reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{rootMargin:'0px 0px -60px 0px'});
+
+/* título hero animado */
+(function(){
+  const h=$('#heroTitle'); let d=.15;
+  const line=(txt,red)=>{ const s=el('span'); if(!red) s.style.color='var(--txt)'; [...txt].forEach(c=>{ const i=el('i',null,c===' '?'&nbsp;':c); i.style.animationDelay=(d+=.04)+'s'; s.appendChild(i); }); h.appendChild(s); };
+  line('Ingeniería de',false); line('Software II',true);
+  document.querySelectorAll('[data-count]').forEach(b=>{ const to=+b.dataset.count; let v=0; setTimeout(()=>{ const t=setInterval(()=>{ v++; b.textContent=v; if(v>=to) clearInterval(t); }, 900/to); },1200); });
+})();
+
+/* nav + barra de progreso */
+const sections=['mapa','b1','b2','b3','b4','autores','historia','autoevaluacion'];
+addEventListener('scroll',()=>{
+  $('#nav').classList.toggle('solid',scrollY>60);
+  $('#bar').style.width=(scrollY/(document.documentElement.scrollHeight-innerHeight)*100)+'%';
+  let cur=''; sections.forEach(id=>{ const s=document.getElementById(id); if(s && s.getBoundingClientRect().top<innerHeight*.35) cur=id; });
+  document.querySelectorAll('#navLinks a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
+},{passive:true});
+
+/* ---------- THREE: HERO ---------- */
+function initHero(){
+  const canvas=$('#hero3d');
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
+  const scene=new THREE.Scene(); scene.background=new THREE.Color(0xffffff); scene.fog=new THREE.FogExp2(0xffffff,.045);
+  const cam=new THREE.PerspectiveCamera(55,1,.1,200); cam.position.set(0,0,13);
+  const root=new THREE.Group(); scene.add(root);
+
+  // Galaxia de partículas
+  const N=9000, pos=new Float32Array(N*3), col=new Float32Array(N*3);
+  const cIn=new THREE.Color(0x18181b), cMid=new THREE.Color(0xE50914), cOut=new THREE.Color(0xf4a3a9);
+  for(let i=0;i<N;i++){
+    const r=Math.pow(Math.random(),1.6)*11+.6, arm=(i%3)*2*Math.PI/3, spin=r*.55;
+    const rx=(Math.random()-.5)*Math.pow(Math.random(),2)*2.4*(1+r*.08);
+    const ry=(Math.random()-.5)*Math.pow(Math.random(),2)*1.2;
+    const rz=(Math.random()-.5)*Math.pow(Math.random(),2)*2.4*(1+r*.08);
+    pos[i*3]=Math.cos(arm+spin)*r+rx; pos[i*3+1]=ry; pos[i*3+2]=Math.sin(arm+spin)*r+rz;
+    const c = r<3 ? cIn.clone().lerp(cMid,r/3) : cMid.clone().lerp(cOut,(r-3)/8);
+    col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
+  }
+  const gg=new THREE.BufferGeometry(); gg.setAttribute('position',new THREE.BufferAttribute(pos,3)); gg.setAttribute('color',new THREE.BufferAttribute(col,3));
+  const dot=(()=>{ const c=document.createElement('canvas'); c.width=c.height=64; const x=c.getContext('2d'); const g=x.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'#fff'); g.addColorStop(.25,'rgba(255,255,255,.8)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,64,64); return new THREE.CanvasTexture(c); })();
+  const galaxy=new THREE.Points(gg,new THREE.PointsMaterial({size:.08,vertexColors:true,map:dot,transparent:true,opacity:.85,depthWrite:false}));
+  galaxy.rotation.x=.38; root.add(galaxy);
+
+  // Núcleo
+  const core=new THREE.Group(); root.add(core);
+  const ico=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(2.1,1)), new THREE.LineBasicMaterial({color:0xE50914}));
+  const ico2=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(1.35,0)), new THREE.LineBasicMaterial({color:0x18181b,transparent:true,opacity:.6}));
+  const orb=new THREE.Mesh(new THREE.SphereGeometry(.62,48,48), new THREE.MeshBasicMaterial({color:0xE50914}));
+  core.add(ico,ico2,orb);
+  // Anillos con "bloques de código"
+  const rings=[];
+  for(let k=0;k<3;k++){
+    const ring=new THREE.Group(); ring.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, 0);
+    ring.add(new THREE.Mesh(new THREE.TorusGeometry(3.1+k*.55,.008,6,180), new THREE.MeshBasicMaterial({color:k===1?0x18181b:0xE50914,transparent:true,opacity:.45})));
+    for(let j=0;j<6+k*2;j++){ const a=j/(6+k*2)*Math.PI*2; const b=new THREE.Mesh(new THREE.BoxGeometry(.16,.16,.16), new THREE.MeshBasicMaterial({color:j%3?0x27272a:0xE50914})); b.position.set(Math.cos(a)*(3.1+k*.55),Math.sin(a)*(3.1+k*.55),0); ring.add(b); }
+    core.add(ring); rings.push(ring);
+  }
+
+  // Palabras clave flotantes
+  const words=['UML','CMMI','SWEBOK','ISO 12207','ISO 25010','COCOMO','PERT','EDT','PMBOK','TDD','Git','SOLID','Riesgo','V(G)','CPI','SPI','Casos de uso','Patrones','Scrum','Calidad','Caja negra','Caja blanca','Línea base','Brooks','Boehm','Royce'];
+  const sprites=[];
+  words.forEach((w,i)=>{
+    const c=document.createElement('canvas'); const x=c.getContext('2d'); x.font='600 64px Inter'; const wd=x.measureText(w).width+40; c.width=wd; c.height=96;
+    x.font='600 64px Inter'; x.fillStyle=i%4===0?'#E50914':'#27272a'; x.textBaseline='middle'; x.fillText(w,20,50);
+    const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace;
+    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthWrite:false,opacity:.85}));
+    const h=.42+Math.random()*.25; s.scale.set(h*wd/96,h,1);
+    const r=4.5+Math.random()*5, a=Math.random()*Math.PI*2;
+    s.userData={r,a,y:(Math.random()-.5)*5,sp:(.03+Math.random()*.05)*(Math.random()<.5?-1:1)};
+    root.add(s); sprites.push(s);
+  });
+
+
+  function size(){ const w=canvas.clientWidth,h=canvas.clientHeight; renderer.setSize(w,h,false); cam.aspect=w/h; cam.updateProjectionMatrix(); root.position.x = w>820 ? 3.6 : 0; root.position.y = w>820 ? 0 : 1.5; }
+  addEventListener('resize',size); size();
+
+  let mx=0,my=0, visible=true;
+  addEventListener('pointermove',e=>{ mx=e.clientX/innerWidth-.5; my=e.clientY/innerHeight-.5; });
+  new IntersectionObserver(([en])=>visible=en.isIntersecting).observe(canvas);
+  const clock=new THREE.Clock();
+  (function loop(){
+    requestAnimationFrame(loop);
+    if(!visible) return;
+    const t=clock.getElapsedTime();
+    galaxy.rotation.y=t*.035;
+    ico.rotation.y=t*.25; ico.rotation.x=t*.12; ico2.rotation.y=-t*.4; ico2.rotation.z=t*.2;
+    orb.scale.setScalar(1+Math.sin(t*2.2)*.08);
+    rings.forEach((r,i)=>{ r.rotation.z=t*(.15+i*.07)*(i%2?-1:1); });
+    sprites.forEach(s=>{ const u=s.userData; u.a+=u.sp*.016; s.position.set(Math.cos(u.a)*u.r, u.y+Math.sin(t*.6+u.a)*.3, Math.sin(u.a)*u.r); s.material.opacity=THREE.MathUtils.clamp(.25+(s.position.z+u.r)/(2*u.r)*.75,0,.95); });
+    const sc=Math.min(scrollY/innerHeight,1);
+    cam.position.x+=(mx*2.2-cam.position.x)*.04; cam.position.y+=(-my*1.4+sc*2-cam.position.y)*.04; cam.position.z=13+sc*4;
+    cam.lookAt(root.position.x*.55,0,0);
+    renderer.render(scene,cam);
+  })();
+}
+
+
+/* ---------- THREE: ILUSTRACIONES DE TEMAS ---------- */
+const PW=640, PH=360;
+const stage=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+stage.setPixelRatio(1); stage.setSize(PW,PH,false);
+stage.toneMapping=THREE.ACESFilmicToneMapping; stage.toneMappingExposure=1.05;
+const pmrem=new THREE.PMREMGenerator(stage);
+const envTex=pmrem.fromScene(new RoomEnvironment(),.04).texture;
+const stageCam=new THREE.PerspectiveCamera(34,16/9,.1,100);
+
+const MAT={
+  red:new THREE.MeshStandardMaterial({color:0xE50914,metalness:.35,roughness:.28}),
+  dred:new THREE.MeshStandardMaterial({color:0x6e070c,metalness:.55,roughness:.35}),
+  white:new THREE.MeshStandardMaterial({color:0xf1f1f1,metalness:.1,roughness:.22}),
+  dark:new THREE.MeshStandardMaterial({color:0x161616,metalness:.9,roughness:.22}),
+  chrome:new THREE.MeshStandardMaterial({color:0xdddddd,metalness:1,roughness:.12}),
+  glow:new THREE.MeshBasicMaterial({color:0xff2a35}),
+  glowW:new THREE.MeshBasicMaterial({color:0x18181b}),
+  glass:new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.04,transmission:1,thickness:1.4,ior:1.45}),
+  ghost:new THREE.MeshStandardMaterial({color:0x18181b,transparent:true,opacity:.12,side:THREE.DoubleSide,depthWrite:false}),
+};
+const V=(x,y,z=0)=>new THREE.Vector3(x,y,z);
+const mesh=(geo,mat,x=0,y=0,z=0)=>{ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); return m; };
+function link(g,a,b,r=.035,m=MAT.white){ const d=new THREE.Vector3().subVectors(b,a), len=d.length(); const c=new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,10),m); c.position.copy(a).addScaledVector(d,.5); c.quaternion.setFromUnitVectors(V(0,1,0),d.clone().normalize()); g.add(c); return c; }
+function tube(g,pts,r,m){ const c=new THREE.CatmullRomCurve3(pts); g.add(new THREE.Mesh(new THREE.TubeGeometry(c,160,r,12,false),m)); return c; }
+function boxEdges(g,s,m,r=.03){ const h=s/2; const P=[[-h,-h,-h],[h,-h,-h],[h,h,-h],[-h,h,-h],[-h,-h,h],[h,-h,h],[h,h,h],[-h,h,h]].map(p=>V(...p)); [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]].forEach(([a,b])=>link(g,P[a],P[b],r,m)); P.forEach(p=>g.add(mesh(new THREE.SphereGeometry(r*1.6,10,10),m,p.x,p.y,p.z))); }
+
+const MOTIF={
+ 1(g){ // ciclo de vida + espiral
+   g.add(new THREE.Mesh(new THREE.TorusGeometry(2.1,.045,12,160),MAT.chrome));
+   for(let i=0;i<7;i++){ const a=i/7*Math.PI*2; g.add(mesh(new THREE.SphereGeometry(.24,32,32),i%2?MAT.white:MAT.red,Math.cos(a)*2.1,Math.sin(a)*2.1,0)); }
+   const pts=[]; for(let t=0;t<Math.PI*6;t+=.12){ const r=.12+t*.09; pts.push(V(Math.cos(t)*r,Math.sin(t)*r,-.6+t*.05)); }
+   tube(g,pts,.055,MAT.red); g.add(mesh(new THREE.SphereGeometry(.16,24,24),MAT.glow));
+   g.rotation.set(.25,-.55,0);
+ },
+ 2(g){ // actor + casos de uso
+   const a=new THREE.Group(); a.position.set(-2.1,0,0);
+   a.add(mesh(new THREE.SphereGeometry(.34,32,32),MAT.white,0,1.25));
+   link(a,V(0,.9),V(0,-.25),.07); link(a,V(-.65,.55),V(.65,.55),.06); link(a,V(0,-.25),V(-.45,-1.3),.07); link(a,V(0,-.25),V(.45,-1.3),.07);
+   g.add(a);
+   [1.35,0,-1.35].forEach((y,i)=>{ const e=new THREE.Mesh(new THREE.CylinderGeometry(1,1,.16,64),i===1?MAT.white:MAT.red); e.rotation.x=Math.PI/2; e.scale.set(1.35,1,.55); e.position.set(1.3,y,0); g.add(e); link(g,V(-1.5,.55),V(-.05,y),.025,MAT.chrome); });
+   const frame=new THREE.Group(); frame.position.set(1.3,0,-.35); boxEdges(frame,1,MAT.dred,.02); frame.scale.set(3.4,4.2,.1); g.add(frame);
+   g.rotation.set(.05,-.35,0);
+ },
+ 3(g){ // clases + herencia
+   const cls=(x,y,w,h,head)=>{ const c=new THREE.Group(); c.position.set(x,y,0);
+     c.add(mesh(new THREE.BoxGeometry(w,.38,.32),head,0,h/2-.19));
+     c.add(mesh(new THREE.BoxGeometry(w,h-.42,.32),MAT.white,0,-.21));
+     for(let i=0;i<3;i++) c.add(mesh(new THREE.BoxGeometry(w*.7,.05,.02),MAT.dark,-w*.08,h/2-.62-i*.22,.17));
+     g.add(c); };
+   cls(0,1.3,1.8,1.25,MAT.red); cls(-1.75,-1.15,1.5,1.1,MAT.dred); cls(1.75,-1.15,1.5,1.1,MAT.dred);
+   link(g,V(-1.75,-.6),V(-1.75,-.15),.03,MAT.chrome); link(g,V(1.75,-.6),V(1.75,-.15),.03,MAT.chrome); link(g,V(-1.75,-.15),V(1.75,-.15),.03,MAT.chrome); link(g,V(0,-.15),V(0,.38),.03,MAT.chrome);
+   const head=new THREE.Mesh(new THREE.ConeGeometry(.2,.3,3),MAT.white); head.position.set(0,.5,0); g.add(head);
+   g.rotation.set(.15,-.45,0);
+ },
+ 4(g){ // gema de calidad
+   g.add(new THREE.Mesh(new THREE.OctahedronGeometry(1.45,0),MAT.glass));
+   g.add(new THREE.Mesh(new THREE.IcosahedronGeometry(.55,0),MAT.glow));
+   [[1.2,0,0],[0,.8,.4],[.5,0,1.2]].forEach((r,i)=>{ const t=new THREE.Mesh(new THREE.TorusGeometry(2.1+i*.25,.025,8,160),i===1?MAT.white:MAT.red); t.rotation.set(...r); g.add(t); });
+   const R=rng(4); for(let i=0;i<40;i++) g.add(mesh(new THREE.SphereGeometry(.03,8,8),MAT.glowW,(R()-.5)*7,(R()-.5)*4,(R()-.5)*3));
+ },
+ 5(g){ // escalera CMMI
+   for(let i=0;i<5;i++){ const h=.55*(i+1); const m=new THREE.MeshStandardMaterial({color:new THREE.Color(0x3a0508).lerp(new THREE.Color(0xff1a28),i/4),metalness:.4,roughness:.3}); g.add(mesh(new THREE.BoxGeometry(.95,h,1.1),m,(i-2)*1.02,-1.5+h/2,0)); }
+   g.add(mesh(new THREE.SphereGeometry(.25,32,32),MAT.glow,2.04,1.55,0));
+   g.add(mesh(new THREE.TorusGeometry(.42,.025,8,64),MAT.white,2.04,1.55,0));
+   g.rotation.set(.18,-.6,0);
+ },
+ 6(g){ // plan de pruebas (checklist)
+   const R=rng(6); const board=new THREE.Group(); board.rotation.x=-.75;
+   board.add(mesh(new THREE.BoxGeometry(4.6,3.3,.08),MAT.dark,0,0,-.06));
+   for(let r=0;r<4;r++) for(let c=0;c<3;c++){ const ok=R()<.6; const x=-1.45+c*1.45, y=1.12-r*.75; board.add(mesh(new THREE.BoxGeometry(1.3,.6,.12),ok?MAT.red:MAT.white,x,y,.05));
+     if(ok){ link(board,V(x-.2,y,.14),V(x-.05,y-.15,.14),.035,MAT.glowW); link(board,V(x-.05,y-.15,.14),V(x+.25,y+.17,.14),.035,MAT.glowW); } }
+   g.add(board); g.rotation.set(0,-.35,0); g.position.y=.3;
+ },
+ 7(g){ // caja negra / caja blanca
+   const b=mesh(new THREE.BoxGeometry(1.9,1.9,1.9),MAT.dark,-1.45,0,0); b.rotation.set(.5,.6,0); g.add(b);
+   const w=new THREE.Group(); w.position.set(1.45,0,0); w.rotation.set(.5,-.6,0); boxEdges(w,1.9,MAT.white,.035);
+   w.add(mesh(new THREE.TorusKnotGeometry(.42,.12,120,16),MAT.red)); g.add(w);
+   g.add(mesh(new THREE.SphereGeometry(.08,12,12),MAT.glow,-1.45,1.6,0));
+ },
+ 9(g){ // riesgo
+   const tri=new THREE.CylinderGeometry(1.8,1.8,.42,3); tri.rotateX(-Math.PI/2);
+   g.add(new THREE.Mesh(tri,MAT.red));
+   g.add(mesh(new THREE.BoxGeometry(.24,1,.2),MAT.dark,0,.2,.27)); g.add(mesh(new THREE.SphereGeometry(.15,24,24),MAT.dark,0,-.55,.27));
+   const R=rng(9); for(let i=0;i<22;i++){ const h=.3+R()*1.1; const c=mesh(new THREE.ConeGeometry(.12+R()*.1,h,4),R()<.3?MAT.red:MAT.dred,(R()-.5)*7,-1.6+h/2,-1-R()*2.5); g.add(c); }
+   g.rotation.set(.05,-.3,0);
+ },
+ 10(g){ // escudo
+   const s=new THREE.Shape(); s.moveTo(0,1.6); s.quadraticCurveTo(1.1,1.3,1.4,1.45); s.lineTo(1.4,.2); s.quadraticCurveTo(1.3,-1.1,0,-1.8); s.quadraticCurveTo(-1.3,-1.1,-1.4,.2); s.lineTo(-1.4,1.45); s.quadraticCurveTo(-1.1,1.3,0,1.6);
+   const geo=new THREE.ExtrudeGeometry(s,{depth:.28,bevelEnabled:true,bevelThickness:.1,bevelSize:.1,bevelSegments:4}); geo.center();
+   const sh=new THREE.Mesh(geo,MAT.red); sh.position.x=-.6; sh.rotation.y=.5; g.add(sh);
+   link(g,V(-1.05,0,.4),V(-.75,-.4,.5),.07,MAT.white); link(g,V(-.75,-.4,.5),V(-.1,.5,.4),.07,MAT.white);
+   const R=rng(10); for(let i=0;i<9;i++){ const y=(R()-.5)*3, z=(R()-.5)*1.5; const p0=V(3.6,y,z), p1=V(.6,y*.4,z*.3), p2=V(2.4,y*.4+(y>0?1.6:-1.6),z-1.2);
+     tube(g,[p0,p1,p2],.02,MAT.ghost); g.add(mesh(new THREE.BoxGeometry(.16,.16,.16),MAT.glowW,p2.x,p2.y,p2.z)); }
+ },
+ 11(g){ // EDT
+   g.add(mesh(new THREE.BoxGeometry(1.6,.55,.4),MAT.red,0,1.7));
+   const l2=[-2.1,0,2.1]; link(g,V(0,1.42),V(0,1.05),.03,MAT.chrome); link(g,V(-2.1,1.05),V(2.1,1.05),.03,MAT.chrome);
+   l2.forEach((x,i)=>{ link(g,V(x,1.05),V(x,.6),.03,MAT.chrome); g.add(mesh(new THREE.BoxGeometry(1.4,.48,.36),MAT.white,x,.36));
+     link(g,V(x,.12),V(x,-.35),.025,MAT.chrome); link(g,V(x-.45,-.35),V(x+.45,-.35),.025,MAT.chrome);
+     [-.45,.45].forEach(dx=>{ link(g,V(x+dx,-.35),V(x+dx,-.65),.025,MAT.chrome); g.add(mesh(new THREE.BoxGeometry(.72,.4,.3),i===1&&dx>0?MAT.glow:MAT.dred,x+dx,-.86)); }); });
+   g.rotation.set(.12,-.4,0);
+ },
+ 12(g){ // estimación: cono de incertidumbre
+   const cone=new THREE.Mesh(new THREE.ConeGeometry(1.6,5,48,1,true),MAT.ghost); cone.geometry.rotateZ(-Math.PI/2); g.add(cone);
+   const wire=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.ConeGeometry(1.6,5,16,4,true)),new THREE.LineBasicMaterial({color:0xff4050,transparent:true,opacity:.5})); wire.geometry.rotateZ(-Math.PI/2); g.add(wire);
+   const R=rng(12); for(let i=0;i<70;i++){ const x=(R()-.5)*5; const rad=1.6*(2.5-x)/5*R(); const a=R()*Math.PI*2; g.add(mesh(new THREE.SphereGeometry(.05+R()*.05,10,10),R()<.4?MAT.glow:MAT.white,x,Math.cos(a)*rad,Math.sin(a)*rad)); }
+   link(g,V(-2.6,0),V(2.8,0),.02,MAT.glow);
+   for(let i=0;i<6;i++){ const h=.4+i*.42; g.add(mesh(new THREE.CylinderGeometry(.17,.17,h,24),MAT.dred,-2.4+i*.95,-1.75+h/2,-1.4)); }
+   g.rotation.set(.2,-.5,0);
+ },
+ 13(g){ // control: curva de valor ganado
+   g.add(mesh(new THREE.BoxGeometry(6,.04,.04),MAT.chrome,0,-1.6)); g.add(mesh(new THREE.BoxGeometry(.04,3.4,.04),MAT.chrome,-3,.1));
+   const plan=[V(-3,-1.6),V(-1.5,-1),V(0,0),V(1.5,.9),V(3,1.6)]; tube(g,plan,.025,MAT.white);
+   const ev=[V(-3,-1.6),V(-1.8,-1.35),V(-.6,-.9),V(.6,-.2),V(1.8,.15),V(3,.9)]; tube(g,ev,.06,MAT.red);
+   ev.forEach(p=>g.add(mesh(new THREE.SphereGeometry(.11,20,20),MAT.glowW,p.x,p.y,p.z)));
+   for(let i=0;i<8;i++){ const h=.3+Math.abs(Math.sin(i*1.3))*1.6; g.add(mesh(new THREE.BoxGeometry(.4,h,.4),MAT.dark,-2.6+i*.75,-1.6+h/2,-1)); }
+   g.rotation.set(.1,-.4,0);
+ },
+ 14(g){ // git
+   tube(g,[V(-3.4,-.6),V(0,-.6),V(3.4,-.6)],.06,MAT.white);
+   for(let i=0;i<8;i++) g.add(mesh(new THREE.SphereGeometry(.17,24,24),MAT.white,-3+i*.86,-.6));
+   const br=tube(g,[V(-2.14,-.6),V(-1.4,.55),V(0,.85),V(1.4,.55),V(2.16,-.6)],.06,MAT.red);
+   [.2,.4,.6,.8].forEach(t=>{ const p=br.getPoint(t); g.add(mesh(new THREE.SphereGeometry(.17,24,24),MAT.glow,p.x,p.y,p.z)); });
+   const br2=tube(g,[V(-1.28,-.6),V(-.6,-1.5),V(.6,-1.6),V(1.3,-.6)],.05,MAT.dred);
+   [.35,.7].forEach(t=>{ const p=br2.getPoint(t); g.add(mesh(new THREE.SphereGeometry(.15,24,24),MAT.dred,p.x,p.y,p.z)); });
+   g.rotation.set(.35,-.45,0);
+ },
+};
+
+const SCENES={};
+function buildScene(n){
+  if(SCENES[n]) return SCENES[n];
+  const s=new THREE.Scene(); s.background=new THREE.Color(0xf4f4f5); s.fog=new THREE.Fog(0xf4f4f5,10,24); s.environment=envTex;
+  const key=new THREE.SpotLight(0xffffff,140,40,.55,.6,1.6); key.position.set(4,7,7); s.add(key);
+  const rim=new THREE.PointLight(0xE50914,110,30,1.6); rim.position.set(-5,2.5,-3); s.add(rim);
+  const rim2=new THREE.PointLight(0xff4040,40,20,1.6); rim2.position.set(5,-1,3); s.add(rim2);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(60,60),new THREE.MeshStandardMaterial({color:0xe9e9ec,metalness:.15,roughness:.55})); floor.rotation.x=-Math.PI/2; floor.position.y=-2.15; s.add(floor);
+  // polvo
+  const R=rng(n*7), P=new Float32Array(240*3); for(let i=0;i<240;i++){ P[i*3]=(R()-.5)*18; P[i*3+1]=(R()-.3)*9; P[i*3+2]=(R()-.5)*12-3; }
+  const dg=new THREE.BufferGeometry(); dg.setAttribute('position',new THREE.BufferAttribute(P,3));
+  const dust=new THREE.Points(dg,new THREE.PointsMaterial({color:0xE50914,size:.035,transparent:true,opacity:.45})); s.add(dust);
+  const g=new THREE.Group(); MOTIF[epBy(n).m](g); const holder=new THREE.Group(); holder.add(g); s.add(holder);
+  return SCENES[n]={scene:s,group:g,holder,dust,base:g.rotation.clone()};
+}
+function renderStage(n,w,h,offset){
+  const S=buildScene(n);
+  stageCam.aspect=w/h; stageCam.updateProjectionMatrix();
+  stageCam.position.set(0,.7,11.2); stageCam.lookAt(0,0,0);
+  S.holder.position.x=offset; S.holder.scale.setScalar(.92);
+  stage.render(S.scene,stageCam);
+}
+
+
+const IMG={};
+function makeImage(n){
+  stage.setPixelRatio(1); stage.setSize(PW,PH,false); renderStage(n,PW,PH,0);
+  const c=document.createElement('canvas'); c.width=PW; c.height=PH; const x=c.getContext('2d');
+  x.drawImage(stage.domElement,0,0);
+  const g=x.createRadialGradient(PW/2,PH/2,PH*.35,PW/2,PH/2,PW*.65); g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(1,'rgba(255,255,255,.35)'); x.fillStyle=g; x.fillRect(0,0,PW,PH);
+  const id=x.getImageData(0,0,PW,PH), d=id.data, R=rng(n*13); for(let i=0;i<d.length;i+=4){ const v=(R()-.5)*5; d[i]+=v; d[i+1]+=v; d[i+2]+=v; } x.putImageData(id,0,0);
+  return IMG[n]=c.toDataURL('image/jpeg',.9);
+}
+const PORTRAIT={};
+function makePortrait(key,idx){
+  const a=AUTH[key], W=360,H=540, c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d'); const R=rng(idx*31+7);
+  let g=x.createRadialGradient(W*.75,H*.15,10,W*.5,H*.45,H*.8); g.addColorStop(0,`hsl(${354+R()*6},85%,${88+R()*5}%)`); g.addColorStop(.5,'#fbeef0'); g.addColorStop(1,'#f4f4f5'); x.fillStyle=g; x.fillRect(0,0,W,H);
+  // iniciales gigantes
+  x.save(); x.globalAlpha=.07; x.fillStyle='#18181b'; x.font=`${a.ini.length>2?210:300}px "Bebas Neue"`; x.textAlign='center'; x.fillText(a.ini,W/2,H*.56); x.restore();
+  // silueta(s) en máscara
+  const m=document.createElement('canvas'); m.width=W; m.height=H; const mx=m.getContext('2d'); mx.fillStyle='#fff';
+  const np=a.people, sc= np===1?1: np===2?.72 : np===3?.6 : .5;
+  for(let p=0;p<np;p++){
+    const cx = np===1 ? W/2 : W*(.5+(p-(np-1)/2)*(np===4?.25:np===3?.3:.36)), off = np>1 ? (p%2? 30:0) : 0;
+    const hy=H*.4+off, hr=74*sc;
+    mx.save(); mx.translate(cx,hy); mx.rotate((R()-.5)*.15);
+    mx.beginPath(); mx.ellipse(0,0,hr*.86,hr*1.08,0,0,Math.PI*2); mx.fill();
+    // cabello
+    const hair=R(); mx.beginPath(); if(hair<.4){ mx.ellipse(0,-hr*.35,hr*.95,hr*.8,0,Math.PI,0); } else if(hair<.7){ mx.ellipse(-hr*.1,-hr*.45,hr*.9,hr*.6,-.2,Math.PI,0); } else { mx.ellipse(0,-hr*.2,hr*.92,hr*.95,0,Math.PI*1.05,-.05); } mx.fill();
+    mx.restore();
+    mx.fillRect(cx-hr*.32,hy+hr*.8,hr*.64,hr*.6);
+    mx.beginPath(); mx.moveTo(cx-hr*2.6,H); mx.bezierCurveTo(cx-hr*2.4,hy+hr*1.6,cx-hr*1.2,hy+hr*1.35,cx,hy+hr*1.35); mx.bezierCurveTo(cx+hr*1.2,hy+hr*1.35,cx+hr*2.4,hy+hr*1.6,cx+hr*2.6,H); mx.closePath(); mx.fill();
+    if(a.glasses && np===1){ mx.globalCompositeOperation='destination-out'; mx.lineWidth=6; mx.strokeStyle='#000'; mx.beginPath(); mx.ellipse(cx-hr*.36,hy+hr*.05,hr*.24,hr*.18,0,0,Math.PI*2); mx.stroke(); mx.beginPath(); mx.ellipse(cx+hr*.36,hy+hr*.05,hr*.24,hr*.18,0,0,Math.PI*2); mx.stroke(); mx.globalCompositeOperation='source-over'; }
+  }
+  const md=mx.getImageData(0,0,W,H).data;
+  // halftone
+  const step=7;
+  for(let yy=0;yy<H;yy+=step) for(let xx=0;xx<W;xx+=step){
+    const al=md[((yy|0)*W+(xx|0))*4+3]; if(al<128) continue;
+    const light=Math.max(0,Math.min(1, .95-(xx/W)*.75 + (R()-.5)*.25 - (yy/H)*.2));
+    const r=step*.55*(.25+light*.85);
+    x.fillStyle = light>.55 ? 'rgba(229,9,20,.85)' : 'rgba(24,24,27,.85)';
+    x.beginPath(); x.arc(xx+step/2,yy+step/2,r,0,Math.PI*2); x.fill();
+  }
+  // velo inferior + texto
+  g=x.createLinearGradient(0,H*.55,0,H); g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(1,'rgba(255,255,255,.97)'); x.fillStyle=g; x.fillRect(0,0,W,H);
+  return PORTRAIT[key]=c.toDataURL('image/jpeg',.88);
+}
+
+/* modelo 3D en vivo al pasar el mouse */
+let liveN=null, liveRAF=null, liveHost=null, ready=false;
+function startLive(n,host){
+  if(!ready || liveN===n) return;
+  stopLive();
+  liveN=n; liveHost=host; host.classList.add('live'); host.appendChild(stage.domElement);
+  const S=buildScene(n), clock=new THREE.Clock();
+  stage.setPixelRatio(Math.min(devicePixelRatio,2));
+  let mx=0,my=0; host.onpointermove=e=>{ const r=host.getBoundingClientRect(); mx=(e.clientX-r.left)/r.width-.5; my=(e.clientY-r.top)/r.height-.5; };
+  (function loop(){
+    if(liveN!==n) return;
+    liveRAF=requestAnimationFrame(loop);
+    const t=clock.getElapsedTime(), w=host.clientWidth, h=host.clientHeight;
+    if(stage.domElement.width!==Math.floor(w*stage.getPixelRatio())) stage.setSize(w,h,false);
+    S.group.rotation.y+= ((S.base.y+mx*1.4+Math.sin(t*.5)*.25)-S.group.rotation.y)*.06;
+    S.group.rotation.x+= ((S.base.x+my*.6)-S.group.rotation.x)*.06;
+    S.group.position.y=Math.sin(t*1.2)*.08; S.dust.rotation.y=t*.04;
+    renderStage(n,w,h,0);
+  })();
+}
+function stopLive(){
+  if(liveHost){ liveHost.classList.remove('live'); liveHost.onpointermove=null; if(stage.domElement.parentNode===liveHost) liveHost.removeChild(stage.domElement); const S=SCENES[liveN]; if(S){ S.group.rotation.copy(S.base); S.group.position.y=0; } }
+  liveN=null; liveHost=null; cancelAnimationFrame(liveRAF);
+}
+
+/* ---------- CONSTRUCCIÓN DE LA PÁGINA ---------- */
+function buildMap(){
+  const m=$('#map');
+  BLOQUES.forEach((b,bi)=>{
+    const row=el('div','mblock rv'); row.style.setProperty('--c',b.c); row.style.transitionDelay=bi*.06+'s';
+    row.innerHTML=`<div class="mb-head"><div class="mb-k">Bloque ${b.id} · ${b.eps.length} temas</div><h4>${b.name}</h4><p>${b.desc}</p></div><div class="mcards"></div>`;
+    const cards=row.querySelector('.mcards');
+    b.eps.forEach(n=>{
+      const e=epBy(n), w=el('div','wk');
+      w.dataset.search=[e.t,e.tag,...e.concepts].join(' ');
+      w.innerHTML=`<div class="s">Tema ${pad(n)}</div><div class="t">${e.t}</div><div class="d">${e.tag}</div>`;
+      w.onclick=()=>document.getElementById('s'+n).scrollIntoView({behavior:'smooth',block:'start'});
+      cards.appendChild(w);
+    });
+    m.appendChild(row); io.observe(row);
+  });
+}
+function buildBlocks(){
+  const host=$('#blocks'); let k=0;
+  BLOQUES.forEach(b=>{
+    const s=el('section','sec block'); s.id='b'+b.id;
+    s.innerHTML=`<div class="sec-head rv"><div class="sec-num">${pad(b.id)}</div><div><div class="kicker">Bloque ${b.id} · ${b.eps.length} temas</div><div class="sec-title">${b.name}</div><p class="sec-desc">${b.desc}</p></div></div><div class="rule"></div>`;
+    b.eps.forEach(n=>{
+      const e=epBy(n);
+      const a=el('article','topic'+(k++%2?' rev':'')); a.id='s'+n;
+      a.dataset.search=[e.t,e.tag,e.syn,...e.concepts,...e.scenes.flat(),...e.authors.map(x=>AUTH[x].name)].join(' ');
+      a.innerHTML=`
+        <div class="t-media rv" data-n="${n}"><div class="skeleton"></div><span class="t-num">Tema ${pad(n)}</span><span class="t-hint">Pasa el mouse para mover el modelo 3D</span></div>
+        <div class="t-body">
+          <div class="rv"><div class="t-kicker">Tema ${pad(n)} · ${b.name}</div><h3 class="t-title">${e.t}</h3><div class="t-tag">${e.tag}</div><p class="t-sum">${e.syn}</p></div>
+          <div class="points">${e.scenes.map((p,i)=>`<div class="pt rv" style="transition-delay:${i*.06}s"><div class="n">${pad(i+1)}</div><div><b>${p[0]}</b><p>${p[1]}</p></div></div>`).join('')}</div>
+          ${e.formula?`<div class="formula rv">${e.formula}</div>`:''}
+          <div class="fact rv"><b>DATO CLAVE</b>${e.fact}</div>
+          <div class="row2 rv">
+            <div><div class="lbl">Conceptos</div><div class="chips">${e.concepts.map(c=>`<span class="chip">${c}</span>`).join('')}</div></div>
+            <div><div class="lbl">Autores de referencia</div><div class="chips">${e.authors.map(x=>`<span class="chip a" data-a="${x}">${AUTH[x].short}</span>`).join('')}</div></div>
+          </div>
+        </div>`;
+      s.appendChild(a);
+    });
+    host.appendChild(s);
+  });
+  host.querySelectorAll('.rv,.rule').forEach(x=>io.observe(x));
+  document.querySelectorAll('.sec > .rule, .sec-head.rv').forEach(x=>io.observe(x));
+  host.querySelectorAll('.chip.a').forEach(c=>c.onclick=()=>goAuthor(c.dataset.a));
+  host.querySelectorAll('.t-media').forEach(m=>{
+    m.addEventListener('pointerenter',()=>startLive(+m.dataset.n,m));
+    m.addEventListener('pointerleave',e=>{ if(e.pointerType==='mouse') stopLive(); });
+  });
+}
+function buildAuthors(){
+  const g=$('#authors');
+  AUTH_ORDER.forEach(k=>{
+    const a=AUTH[k], eps=EP.filter(e=>e.authors.includes(k));
+    const c=el('div','acard rv'); c.id='a-'+k; c.dataset.a=k;
+    c.dataset.search=[a.name,a.short,a.role,a.txt,...a.works.flat()].join(' ');
+    c.innerHTML=`<div class="inner">
+      <div class="face front"><div class="skeleton"></div><div class="meta"><div class="nm">${a.short}</div><b>${a.role}</b><span>${a.years}</span></div></div>
+      <div class="face back"><h4>${a.name}</h4><div class="yr">${a.years}</div><p>${a.txt}</p>
+        <ul>${a.works.map(w=>`<li><b>${w[0]}</b>${w[1]}</li>`).join('')}</ul>
+        <div class="eps">${eps.map(e=>`<a href="#s${e.n}" title="${e.t}">Tema ${pad(e.n)}</a>`).join('')}</div></div></div>`;
+    c.onclick=e=>{ if(e.target.closest('a')) return; c.classList.toggle('flip'); };
+    g.appendChild(c); io.observe(c);
+  });
+  const F=[['todos','Todos'],['procesos','Procesos y ciclo de vida'],['diseno','Diseño y modelado'],['calidad','Calidad y pruebas'],['gestion','Gestión, estimación y riesgos']];
+  F.forEach(([k,l],i)=>{ const b=el('button',i?'':'on',l); b.onclick=()=>{ document.querySelectorAll('#filters button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    document.querySelectorAll('.acard').forEach(c=>c.classList.toggle('hide', k!=='todos' && !CAT[k].includes(c.dataset.a))); }; $('#filters').appendChild(b); });
+}
+function goAuthor(k){
+  document.querySelectorAll('#filters button')[0].click();
+  const c=document.getElementById('a-'+k); c.scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(()=>{ c.classList.add('flip','pulse'); setTimeout(()=>c.classList.remove('pulse'),1500); },600);
+}
+function refreshImages(){
+  document.querySelectorAll('.t-media').forEach(m=>{ const n=+m.dataset.n, sk=m.querySelector('.skeleton'); if(sk&&IMG[n]){ const im=new Image(); im.src=IMG[n]; im.alt='Ilustración 3D: '+epBy(n).t; sk.replaceWith(im);} });
+  document.querySelectorAll('.acard').forEach(c=>{ const k=c.dataset.a, sk=c.querySelector('.front .skeleton'); if(sk&&PORTRAIT[k]){ const im=new Image(); im.src=PORTRAIT[k]; im.alt='Retrato estilizado de '+AUTH[k].name; sk.replaceWith(im);} });
+}
+function buildTimeline(){
+  const tr=$('#tlTrack');
+  TIMELINE.forEach(([y,t,d,tag])=>tr.appendChild(el('div','tl-item',`<div class="tl-year">${y}</div><div class="tl-card"><b>${t}</b><p>${d}</p><em>${tag}</em></div>`)));
+  const tio=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('in',e.isIntersecting)),{root:tr,threshold:.3});
+  tr.querySelectorAll('.tl-item').forEach(i=>tio.observe(i));
+  let down=false,sx=0,sl=0;
+  tr.addEventListener('pointerdown',e=>{down=true;sx=e.clientX;sl=tr.scrollLeft;tr.classList.add('drag');});
+  addEventListener('pointerup',()=>{down=false;tr.classList.remove('drag');});
+  tr.addEventListener('pointermove',e=>{ if(down) tr.scrollLeft=sl-(e.clientX-sx); });
+  tr.addEventListener('wheel',e=>{ if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){ const max=tr.scrollWidth-tr.clientWidth; if((e.deltaY>0&&tr.scrollLeft<max-1)||(e.deltaY<0&&tr.scrollLeft>0)){ e.preventDefault(); tr.scrollLeft+=e.deltaY; } } },{passive:false});
+}
+function buildQuiz(){
+  const box=$('#quizIn'); let i=0,score=0; const order=[...QUIZ].sort(()=>Math.random()-.5).slice(0,10);
+  box.innerHTML=`<div class="kicker">Repaso de los temas</div><div class="q-title">Pon a prueba lo que sabes</div><p style="color:var(--mut);margin-bottom:24px">10 preguntas aleatorias sobre los 4 bloques temáticos, con explicación de cada respuesta.</p><button class="btn btn-red" id="qStart">Comenzar</button>`;
+  $('#qStart').onclick=()=>q();
+  function q(){
+    const it=order[i];
+    box.innerHTML=`<div class="kicker">Pregunta ${i+1} de ${order.length}</div><div class="q-bar"><b style="width:${i/order.length*100}%"></b></div><div class="q-text">${it.q}</div><div class="q-opts">${it.o.map((o,k)=>`<button data-k="${k}">${o}</button>`).join('')}</div><div class="q-exp"></div><div class="q-foot"><span>Puntaje: ${score}</span><span></span></div>`;
+    box.querySelectorAll('.q-opts button').forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k; box.querySelectorAll('.q-opts button').forEach(x=>{x.disabled=true; if(+x.dataset.k===it.a) x.classList.add('ok');});
+      if(k===it.a) score++; else b.classList.add('bad');
+      box.querySelector('.q-exp').innerHTML=(k===it.a?'<b style="color:var(--green)">Correcto.</b> ':'<b style="color:#ff4d55">Incorrecto.</b> ')+it.e;
+      const nx=el('button','btn btn-gray',i<order.length-1?'Siguiente →':'Ver resultado'); nx.style.cssText='font-size:15px;padding:8px 18px';
+      nx.onclick=()=>{ i++; i<order.length?q():end(); }; const f=box.querySelector('.q-foot'); f.firstChild.textContent='Puntaje: '+score; f.lastChild.replaceWith(nx);
+    });
+  }
+  function end(){
+    const msg=score>=9?'Excelente: dominas el curso.':score>=7?'Muy bien: repasa los temas donde fallaste.':score>=5?'Vas bien, pero conviene repasar.':'Conviene repasar el resumen desde el Bloque 1.';
+    box.innerHTML=`<div class="kicker">Resultado</div><div class="q-big">${score}/${order.length}</div><div class="q-title" style="font-size:38px">${msg}</div><button class="btn btn-red" id="qAgain" style="margin-top:16px">↻ Intentar de nuevo</button>`;
+    $('#qAgain').onclick=()=>{ order.sort(()=>Math.random()-.5); i=0; score=0; q(); };
+  }
+}
+function quiz3d(){
+  const c=$('#quiz3d'); const r=new THREE.WebGLRenderer({canvas:c,alpha:true,antialias:true}); r.setPixelRatio(Math.min(devicePixelRatio,2)); r.setSize(420,420,false);
+  const s=new THREE.Scene(), cam=new THREE.PerspectiveCamera(40,1,.1,50); cam.position.z=7;
+  const k=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.TorusKnotGeometry(1.5,.45,90,10,2,3)),new THREE.LineBasicMaterial({color:0xE50914,transparent:true,opacity:.8})); s.add(k);
+  let vis=false; new IntersectionObserver(([e])=>vis=e.isIntersecting).observe(c);
+  (function l(t){ requestAnimationFrame(l); if(!vis) return; k.rotation.x=t*.0003; k.rotation.y=t*.0005; r.render(s,cam); })(0);
+}
+(function search(){
+  const inp=$('#searchInput');
+  const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  let t; inp.addEventListener('input',()=>{ clearTimeout(t); t=setTimeout(()=>{
+    const q=norm(inp.value.trim());
+    document.querySelectorAll('[data-search]').forEach(c=>{ const ok=!q||norm(c.dataset.search).includes(q); c.style.display=ok?'':'none'; });
+    document.querySelectorAll('.block').forEach(b=>{ b.style.display=[...b.querySelectorAll('.topic')].some(x=>x.style.display!=='none')?'':'none'; });
+    const first=[...document.querySelectorAll('.topic,.acard')].find(x=>x.style.display!=='none');
+    if(q && first) first.scrollIntoView({behavior:'smooth',block:'start'});
+  },300); });
+})();
+
+/* arranque */
+buildMap(); buildBlocks(); buildAuthors(); buildTimeline(); buildQuiz();
+try{ initHero(); }catch(e){ console.error(e); }
+try{ quiz3d(); }catch(e){}
+(async function(){
+  try{ await Promise.all([document.fonts.load('48px "Bebas Neue"'),document.fonts.load('500 15px Inter')]); }catch(e){}
+  const tasks=[...EP.map(e=>()=>makeImage(e.n)), ...AUTH_ORDER.map((k,i)=>()=>makePortrait(k,i))];
+  for(let i=0;i<tasks.length;i++){ tasks[i](); if(i%3===2){ refreshImages(); await new Promise(r=>requestAnimationFrame(r)); } }
+  refreshImages(); ready=true;
+})();
+</script>
+</body>
+</html>
